@@ -8,13 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		C302D8C11F0512E200AF5D96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C302D8C01F0512E200AF5D96 /* AppDelegate.swift */; };
-		C302D8C31F0512E200AF5D96 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C302D8C21F0512E200AF5D96 /* ViewController.swift */; };
 		C302D8C61F0512E200AF5D96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C302D8C41F0512E200AF5D96 /* Main.storyboard */; };
 		C302D8C81F0512E200AF5D96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C302D8C71F0512E200AF5D96 /* Assets.xcassets */; };
 		C302D8CB1F0512E200AF5D96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C302D8C91F0512E200AF5D96 /* LaunchScreen.storyboard */; };
 		C302D8D61F0512E200AF5D96 /* UDF_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C302D8D51F0512E200AF5D96 /* UDF_SwiftTests.swift */; };
+		C38774D41F14D11600C1E8F4 /* ProjectReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */; };
+		C38774D61F14D5E900C1E8F4 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D51F14D5E900C1E8F4 /* Routes.swift */; };
+		C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */; };
 		C39B077C1F0A5F850003838D /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C39B077B1F0A5F850003838D /* ReSwift.framework */; };
 		C39B077D1F0A5F850003838D /* ReSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C39B077B1F0A5F850003838D /* ReSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C3E450F11F14BC690020A603 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F01F14BC690020A603 /* HomeViewController.swift */; };
+		C3E450F41F14BEA10020A603 /* MainState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F31F14BEA10020A603 /* MainState.swift */; };
+		C3E450F71F14BED70020A603 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F61F14BED70020A603 /* Project.swift */; };
+		C3E450F91F14BF910020A603 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F81F14BF910020A603 /* Item.swift */; };
+		C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450FA1F14C07E0020A603 /* ProjectActions.swift */; };
+		C3E450FD1F14C1AC0020A603 /* ReSwiftRouter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */; };
+		C3E450FE1F14C1AC0020A603 /* ReSwiftRouter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +43,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C3E450FE1F14C1AC0020A603 /* ReSwiftRouter.framework in Embed Frameworks */,
 				C39B077D1F0A5F850003838D /* ReSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -44,7 +54,6 @@
 /* Begin PBXFileReference section */
 		C302D8BD1F0512E100AF5D96 /* UDF_Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UDF_Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C302D8C01F0512E200AF5D96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C302D8C21F0512E200AF5D96 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C302D8C51F0512E200AF5D96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C302D8C71F0512E200AF5D96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C302D8CA1F0512E200AF5D96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -52,7 +61,16 @@
 		C302D8D11F0512E200AF5D96 /* UDF_SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UDF_SwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C302D8D51F0512E200AF5D96 /* UDF_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDF_SwiftTests.swift; sourceTree = "<group>"; };
 		C302D8D71F0512E200AF5D96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C39B077B1F0A5F850003838D /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = Carthage/Build/iOS/ReSwift.framework; sourceTree = "<group>"; };
+		C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectReducer.swift; sourceTree = "<group>"; };
+		C38774D51F14D5E900C1E8F4 /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
+		C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		C39B077B1F0A5F850003838D /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = ../Carthage/Build/iOS/ReSwift.framework; sourceTree = "<group>"; };
+		C3E450F01F14BC690020A603 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		C3E450F31F14BEA10020A603 /* MainState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainState.swift; sourceTree = "<group>"; };
+		C3E450F61F14BED70020A603 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		C3E450F81F14BF910020A603 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		C3E450FA1F14C07E0020A603 /* ProjectActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActions.swift; sourceTree = "<group>"; };
+		C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwiftRouter.framework; path = ../Carthage/Build/iOS/ReSwiftRouter.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3E450FD1F14C1AC0020A603 /* ReSwiftRouter.framework in Frameworks */,
 				C39B077C1F0A5F850003838D /* ReSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,7 +96,6 @@
 		C302D8B41F0512E100AF5D96 = {
 			isa = PBXGroup;
 			children = (
-				C39B077B1F0A5F850003838D /* ReSwift.framework */,
 				C302D8BF1F0512E100AF5D96 /* UDF_Swift */,
 				C302D8D41F0512E200AF5D96 /* UDF_SwiftTests */,
 				C302D8BE1F0512E100AF5D96 /* Products */,
@@ -96,12 +114,15 @@
 		C302D8BF1F0512E100AF5D96 /* UDF_Swift */ = {
 			isa = PBXGroup;
 			children = (
-				C302D8C01F0512E200AF5D96 /* AppDelegate.swift */,
-				C302D8C21F0512E200AF5D96 /* ViewController.swift */,
-				C302D8C41F0512E200AF5D96 /* Main.storyboard */,
-				C302D8C71F0512E200AF5D96 /* Assets.xcassets */,
-				C302D8C91F0512E200AF5D96 /* LaunchScreen.storyboard */,
-				C302D8CC1F0512E200AF5D96 /* Info.plist */,
+				C3E450FF1F14C1B60020A603 /* Frameworks */,
+				C3E450EA1F14BC690020A603 /* Actions */,
+				C3E450EB1F14BC690020A603 /* Reducers */,
+				C3E450EC1F14BC690020A603 /* Routers */,
+				C3E450F51F14BEBF0020A603 /* Entities */,
+				C3E450ED1F14BC690020A603 /* Services */,
+				C3E450F21F14BC770020A603 /* Resources */,
+				C3E450EE1F14BC690020A603 /* States */,
+				C3E450EF1F14BC690020A603 /* ViewControllers */,
 			);
 			path = UDF_Swift;
 			sourceTree = "<group>";
@@ -113,6 +134,84 @@
 				C302D8D71F0512E200AF5D96 /* Info.plist */,
 			);
 			path = UDF_SwiftTests;
+			sourceTree = "<group>";
+		};
+		C3E450EA1F14BC690020A603 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				C3E450FA1F14C07E0020A603 /* ProjectActions.swift */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
+		C3E450EB1F14BC690020A603 /* Reducers */ = {
+			isa = PBXGroup;
+			children = (
+				C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */,
+			);
+			path = Reducers;
+			sourceTree = "<group>";
+		};
+		C3E450EC1F14BC690020A603 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				C38774D51F14D5E900C1E8F4 /* Routes.swift */,
+			);
+			path = Routers;
+			sourceTree = "<group>";
+		};
+		C3E450ED1F14BC690020A603 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C3E450EE1F14BC690020A603 /* States */ = {
+			isa = PBXGroup;
+			children = (
+				C3E450F31F14BEA10020A603 /* MainState.swift */,
+			);
+			path = States;
+			sourceTree = "<group>";
+		};
+		C3E450EF1F14BC690020A603 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				C3E450F01F14BC690020A603 /* HomeViewController.swift */,
+				C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		C3E450F21F14BC770020A603 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C302D8C01F0512E200AF5D96 /* AppDelegate.swift */,
+				C302D8C41F0512E200AF5D96 /* Main.storyboard */,
+				C302D8C71F0512E200AF5D96 /* Assets.xcassets */,
+				C302D8C91F0512E200AF5D96 /* LaunchScreen.storyboard */,
+				C302D8CC1F0512E200AF5D96 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		C3E450F51F14BEBF0020A603 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				C3E450F61F14BED70020A603 /* Project.swift */,
+				C3E450F81F14BF910020A603 /* Item.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		C3E450FF1F14C1B60020A603 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */,
+				C39B077B1F0A5F850003838D /* ReSwift.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,8 +320,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C302D8C31F0512E200AF5D96 /* ViewController.swift in Sources */,
+				C3E450F91F14BF910020A603 /* Item.swift in Sources */,
+				C38774D61F14D5E900C1E8F4 /* Routes.swift in Sources */,
 				C302D8C11F0512E200AF5D96 /* AppDelegate.swift in Sources */,
+				C38774D41F14D11600C1E8F4 /* ProjectReducer.swift in Sources */,
+				C3E450F41F14BEA10020A603 /* MainState.swift in Sources */,
+				C3E450F11F14BC690020A603 /* HomeViewController.swift in Sources */,
+				C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */,
+				C3E450F71F14BED70020A603 /* Project.swift in Sources */,
+				C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

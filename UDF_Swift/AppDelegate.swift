@@ -7,15 +7,32 @@
 //
 
 import UIKit
+import ReSwift
+import ReSwiftRouter
+
+let projectsStore = Store<MainState>(reducer: ProjectReducer.reduce, state: MainState.default)
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var router: Router<MainState>!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = UIViewController()
+
+        let mainRoutable = HomeViewRoutable(window: window!)
+        router = Router(store: projectsStore, rootRoutable: mainRoutable) { (state) -> Subscription<NavigationState> in
+            state.select { $0.navigationState }
+        }
+
+        projectsStore.dispatch(ReSwiftRouter.SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+
+        window?.makeKeyAndVisible()
+
         return true
     }
 
