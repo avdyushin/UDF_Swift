@@ -28,6 +28,7 @@
 		C3F883831F1513AB006164CC /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883811F1513AB006164CC /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3F883851F151849006164CC /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883841F151849006164CC /* Realm.framework */; };
 		C3F883861F151849006164CC /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883841F151849006164CC /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C3F883881F152782006164CC /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F883871F152782006164CC /* ProjectViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwiftRouter.framework; path = ../Carthage/Build/iOS/ReSwiftRouter.framework; sourceTree = "<group>"; };
 		C3F883811F1513AB006164CC /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		C3F883841F151849006164CC /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		C3F883871F152782006164CC /* ProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +192,7 @@
 			children = (
 				C3E450F01F14BC690020A603 /* HomeViewController.swift */,
 				C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */,
+				C3F883871F152782006164CC /* ProjectViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3F883881F152782006164CC /* ProjectViewController.swift in Sources */,
 				C3E450F91F14BF910020A603 /* Item.swift in Sources */,
 				C38774D61F14D5E900C1E8F4 /* Routes.swift in Sources */,
 				C302D8C11F0512E200AF5D96 /* AppDelegate.swift in Sources */,

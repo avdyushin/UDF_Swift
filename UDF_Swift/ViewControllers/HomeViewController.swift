@@ -50,6 +50,21 @@ class HomeViewController: UITableViewController {
             projectsStore.dispatch(DeleteProject(project: project))
         }
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let project = projectsStore.state.projects[indexPath.row]
+        let routes: [RouteElementIdentifier] = [
+            RouteIdentifiers.HomeViewController.rawValue,
+            RouteIdentifiers.ProjectViewController.rawValue
+        ]
+
+        let routeAction = SetRouteAction(routes)
+        let setDataAction = SetRouteSpecificData(route: routes, data: project)
+        projectsStore.dispatch(setDataAction)
+        projectsStore.dispatch(routeAction)
+    }
 }
 
 extension HomeViewController: StoreSubscriber {
