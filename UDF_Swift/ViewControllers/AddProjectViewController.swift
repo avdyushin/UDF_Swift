@@ -24,17 +24,26 @@ class AddProjectViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+    }
+
+    @IBAction func onCancelTapped(_ sender: Any) {
+        routeBack()
+    }
+
+    @IBAction func onSaveTapped(_ sender: Any) {
+        let action = CreateProject(route: [""], title: "Demo", frequency: .daily, units: "€")
+        projectsStore.dispatch(action)
+        routeBack()
+    }
+
+    func routeBack() {
+        dismiss(animated: true, completion: nil)
         if projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue] {
 
             projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
         }
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source

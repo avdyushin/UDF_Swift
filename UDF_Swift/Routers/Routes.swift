@@ -35,11 +35,9 @@ struct HomeViewRoutable: Routable {
             return setToMain()
         case RouteIdentifiers.AddProjectViewController.rawValue:
             let vc = storyboard.instantiateViewController(withIdentifier: routeElementIdentifier)
-            if let nav = self.window.rootViewController as? UINavigationController {
-                completionHandler()
-                nav.pushViewController(vc, animated: animated)
-                return AddProjectRoutable()
-            }
+            let nav = UINavigationController(rootViewController: vc)
+            self.window.rootViewController?.present(nav, animated: true, completion: completionHandler)
+            return AddProjectRoutable()
         default: ()
         }
         fatalError("Push route `\(routeElementIdentifier)` not found!")

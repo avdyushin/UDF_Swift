@@ -22,14 +22,11 @@ class HomeViewController: UITableViewController {
     }
 
     @IBAction func onAddTapped(_ sender: Any) {
-        let route: [RouteElementIdentifier] = [
+        let routes: [RouteElementIdentifier] = [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue
         ]
-        let action = ReSwiftRouter.SetRouteAction(route)
-        projectsStore.dispatch(action)
-//        let action = CreateProject(route: [""], title: "Demo", frequency: .daily, units: "€")
-//        projectsStore.dispatch(action)
+        projectsStore.dispatch(SetRouteAction(routes))
     }
 
     // MARK: - Table view data source
@@ -40,20 +37,18 @@ class HomeViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath)
+        let project = projectsStore.state.projects[indexPath.row]
+        cell.textLabel?.text = project.title
         return cell
     }
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+//        if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+//        }
     }
-    */
 }
 
 extension HomeViewController: StoreSubscriber {

@@ -83,7 +83,18 @@
                             <outlet property="delegate" destination="eYv-S4-YMK" id="vvS-Ic-ZEj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Add / Edit" id="CJe-QP-Dpb"/>
+                    <navigationItem key="navigationItem" title="Add / Edit" id="CJe-QP-Dpb">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="oDt-k7-Lif">
+                            <connections>
+                                <action selector="onCancelTapped:" destination="eYv-S4-YMK" id="vmW-mq-g1E"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="4Yi-Cw-d6t">
+                            <connections>
+                                <action selector="onSaveTapped:" destination="eYv-S4-YMK" id="hm0-C8-nNG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tbV-gp-H1z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

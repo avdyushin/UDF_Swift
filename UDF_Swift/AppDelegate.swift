@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             state.select { $0.navigationState }
         }
 
-        projectsStore.dispatch(ReSwiftRouter.SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+        projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
 
         window?.makeKeyAndVisible()
 
