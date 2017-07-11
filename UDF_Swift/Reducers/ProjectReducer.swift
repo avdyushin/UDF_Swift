@@ -9,21 +9,31 @@
 import Foundation
 import ReSwift
 import ReSwiftRouter
+import RealmSwift
 
 struct ProjectReducer {
     static func reduce(action: Action, state: MainState?) -> MainState {
         let navigationState = NavigationReducer.handleAction(action, state: state?.navigationState)
-        var projects = state?.projects ?? []
+        let realm = try! Realm()
 
-        if let action = action as? CreateProject {
-            let project = Project(title: action.title,
-                                  frequency: action.frequency,
-                                  units: action.units,
-                                  items: [])
-            projects.append(project)
+        switch action {
+        case let action as CreateProject:
+            let project = Project()
+            project.title = action.title
+            project.frequency = action.frequency
+            project.units = action.units
+
+            try! realm.write {
+                realm.add(project)
+            }
+        case let action as DeleteProject:
+            try! realm.write {
+                realm.delete(action.project)
+            }
+        default:
+            ()
         }
 
-        return MainState(navigationState: navigationState,
-                         projects: projects)
+        return MainState(navigationState: navigationState)
     }
 }

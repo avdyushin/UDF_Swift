@@ -9,9 +9,9 @@
 import UIKit
 import ReSwift
 import ReSwiftRouter
+import RealmSwift
 
 let projectsStore = Store<MainState>(reducer: ProjectReducer.reduce, state: MainState.default)
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -20,7 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var router: Router<MainState>!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
+        let config = Realm.Configuration(
+            // Set the new schema version. This must be greater than the previously used
+            // version (if you've never set a schema version before, the version is 0).
+            schemaVersion: 1,
+
+            // Set the block which will be called automatically when opening a Realm with
+            // a schema version lower than the one set above
+            migrationBlock: { migration, oldSchemaVersion in
+            }
+        ) 
+        Realm.Configuration.defaultConfiguration = config
+
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIViewController()
 

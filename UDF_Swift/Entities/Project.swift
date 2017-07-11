@@ -7,15 +7,40 @@
 //
 
 import UIKit
+import RealmSwift
 
-struct Project {
+class Project: Object {
 
-    enum Frequency {
+    enum Frequency: Int, CustomStringConvertible {
         case daily, monthly, yearly
+        static var all = [Frequency.daily, Frequency.monthly, Frequency.yearly]
+        var description: String {
+            switch self {
+            case .daily:
+                return "Daily"
+            case .monthly:
+                return "Monthly"
+            case .yearly:
+                return "Yearly"
+            }
+        }
     }
 
-    var title: String
-    var frequency: Frequency
-    var units: String
-    var items: [Item]
+    private var _frequency = Frequency.daily
+    var frequency: Frequency {
+        get {
+            return Frequency(rawValue: frequencyRaw) ?? .daily
+        }
+        set {
+            _frequency = newValue
+            frequencyRaw = _frequency.rawValue
+        }
+    }
+
+    private dynamic var frequencyRaw = 0
+    dynamic var id = UUID().uuidString
+    dynamic var title = ""
+    dynamic var units = ""
+    let items = List<Item>()
+
 }

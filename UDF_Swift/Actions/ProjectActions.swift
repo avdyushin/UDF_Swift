@@ -11,8 +11,11 @@ import ReSwift
 import ReSwiftRouter
 
 struct CreateProject: Action {
-    let route: Route
     let title: String
     let frequency: Project.Frequency
     let units: String
+}
+
+struct DeleteProject: Action {
+    let project: Project
 }

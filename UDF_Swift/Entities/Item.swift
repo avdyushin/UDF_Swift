@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Item {
-    var amount: Float
-    var comment: String?
+class Item: Object {
+
+    dynamic var id = UUID().uuidString
+    dynamic var timestamp = Date()
+    dynamic var amount = 0.0
+    dynamic var comment: String?
+    
 }

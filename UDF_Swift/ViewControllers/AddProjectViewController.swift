@@ -11,19 +11,23 @@ import ReSwiftRouter
 
 class AddProjectViewController: UITableViewController {
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var frequencyLabel: UILabel!
+    @IBOutlet weak var unitsLabel: UILabel!
+
+    private let frequencies = Project.Frequency.all
+    private var frequencyIndex = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        titleLabel.text = ""
+        frequencyLabel.text = frequencies[frequencyIndex].description
+        unitsLabel.text = ""
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
 
     @IBAction func onCancelTapped(_ sender: Any) {
@@ -31,7 +35,12 @@ class AddProjectViewController: UITableViewController {
     }
 
     @IBAction func onSaveTapped(_ sender: Any) {
-        let action = CreateProject(route: [""], title: "Demo", frequency: .daily, units: "€")
+        guard let title = titleLabel.text,
+              let units = unitsLabel.text else {
+            return
+        }
+        let frequency = frequencies[frequencyIndex]
+        let action = CreateProject(title: title, frequency: frequency, units: units)
         projectsStore.dispatch(action)
         routeBack()
     }
@@ -46,71 +55,46 @@ class AddProjectViewController: UITableViewController {
         }
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    func inputAlert(title: String, completion: @escaping (String?) -> Void) {
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = title
+        }
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
+            let textField = alert.textFields?[0]
+            DispatchQueue.main.async {
+                completion(textField?.text)
+            }
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            completion(nil)
+        })
+        present(alert, animated: true, completion: nil)
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch indexPath.row {
+        case 0:
+            inputAlert(title: "Title") { text in
+                if let title = text {
+                    self.titleLabel.text = title
+                    self.tableView.reloadData()
+                }
+            }
+        case 1:
+            frequencyIndex = (frequencyIndex + 1) % frequencies.count
+            frequencyLabel.text = frequencies[frequencyIndex].description
+            tableView.reloadData()
+        case 2:
+            inputAlert(title: "Units") { text in
+                if let units = text {
+                    self.unitsLabel.text = units
+                    self.tableView.reloadData()
+                }
+            }
+        default:
+            ()
+        }
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

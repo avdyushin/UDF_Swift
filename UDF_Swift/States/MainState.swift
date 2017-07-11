@@ -9,10 +9,17 @@
 import UIKit
 import ReSwift
 import ReSwiftRouter
+import RealmSwift
 
-struct MainState: StateType, HasNavigationState {
+class MainState: NSObject, StateType, HasNavigationState {
     var navigationState: NavigationState
-    var projects: [Project]
+    var projects: Results<Project>
+    let realm = try! Realm()
 
-    static var `default` = MainState(navigationState: NavigationState(), projects: [])
+    init(navigationState: NavigationState = NavigationState()) {
+        self.projects = realm.objects(Project.self)
+        self.navigationState = navigationState
+    }
+
+    static var `default` = MainState()
 }

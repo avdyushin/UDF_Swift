@@ -39,15 +39,16 @@ class HomeViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath)
         let project = projectsStore.state.projects[indexPath.row]
         cell.textLabel?.text = project.title
+        cell.detailTextLabel?.text = "\(project.frequency) in \(project.units), items = \(project.items.count)"
         return cell
     }
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
+        if editingStyle == .delete {
+            let project = projectsStore.state.projects[indexPath.row]
+            projectsStore.dispatch(DeleteProject(project: project))
+        }
     }
 }
 
