@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReSwift
 import ReSwiftRouter
 
 class AddProjectViewController: UITableViewController {
@@ -17,13 +18,39 @@ class AddProjectViewController: UITableViewController {
 
     private let frequencies = Project.Frequency.all
     private var frequencyIndex = 0
+    private var project: Project? = nil {
+        didSet {
+            if let project = project {
+                titleLabel.text = project.title
+                frequencyIndex = project.frequency.rawValue
+                frequencyLabel.text = frequencies[frequencyIndex].description
+                unitsLabel.text = project.units
+            } else {
+                titleLabel.text = ""
+                frequencyLabel.text = frequencies[frequencyIndex].description
+                unitsLabel.text = ""
+            }
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        projectsStore.subscribe(self) { state in
+            state.select { currentState in
+                self.project = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route)
+                return currentState
+            }
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        projectsStore.unsubscribe(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        titleLabel.text = ""
-        frequencyLabel.text = frequencies[frequencyIndex].description
-        unitsLabel.text = ""
     }
 
     override func awakeFromNib() {
@@ -40,9 +67,12 @@ class AddProjectViewController: UITableViewController {
             return
         }
         let frequency = frequencies[frequencyIndex]
-        let action = CreateProject(title: title, frequency: frequency, units: units)
-        projectsStore.dispatch(action)
-        routeBack()
+
+        if let project = project {
+            let action = ProjectActions.update(project, title, frequency, units)
+            projectsStore.dispatch(action)
+            routeBack()
+        }
     }
 
     func routeBack() {
@@ -55,10 +85,11 @@ class AddProjectViewController: UITableViewController {
         }
     }
 
-    func inputAlert(title: String, completion: @escaping (String?) -> Void) {
+    func inputAlert(title: String, value: String? = nil, completion: @escaping (String?) -> Void) {
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         alert.addTextField { (textField) in
             textField.placeholder = title
+            textField.text = value
         }
         alert.addAction(UIAlertAction(title: "OK", style: .default) { action in
             let textField = alert.textFields?[0]
@@ -76,7 +107,7 @@ class AddProjectViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            inputAlert(title: "Title") { text in
+            inputAlert(title: "Title", value: project?.title) { text in
                 if let title = text {
                     self.titleLabel.text = title
                     self.tableView.reloadData()
@@ -87,7 +118,7 @@ class AddProjectViewController: UITableViewController {
             frequencyLabel.text = frequencies[frequencyIndex].description
             tableView.reloadData()
         case 2:
-            inputAlert(title: "Units") { text in
+            inputAlert(title: "Units", value: project?.units) { text in
                 if let units = text {
                     self.unitsLabel.text = units
                     self.tableView.reloadData()
@@ -96,5 +127,11 @@ class AddProjectViewController: UITableViewController {
         default:
             ()
         }
+    }
+}
+
+extension AddProjectViewController: StoreSubscriber {
+    func newState(state: MainState) {
+
     }
 }

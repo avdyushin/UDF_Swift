@@ -10,12 +10,7 @@ import Foundation
 import ReSwift
 import ReSwiftRouter
 
-struct CreateProject: Action {
-    let title: String
-    let frequency: Project.Frequency
-    let units: String
-}
-
-struct DeleteProject: Action {
-    let project: Project
+enum ProjectActions: Action {
+    case update(Project, String, Project.Frequency, String)
+    case delete(Project)
 }

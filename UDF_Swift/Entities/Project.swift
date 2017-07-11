@@ -12,7 +12,7 @@ import RealmSwift
 class Project: Object {
 
     enum Frequency: Int, CustomStringConvertible {
-        case daily, monthly, yearly
+        case daily = 0, monthly, yearly
         static var all = [Frequency.daily, Frequency.monthly, Frequency.yearly]
         var description: String {
             switch self {

@@ -26,6 +26,8 @@ class HomeViewController: UITableViewController {
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue
         ]
+        let setDataAction = SetRouteSpecificData(route: routes, data: Project())
+        projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
     }
 
@@ -43,12 +45,24 @@ class HomeViewController: UITableViewController {
         return cell
     }
 
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let project = projectsStore.state.projects[indexPath.row]
-            projectsStore.dispatch(DeleteProject(project: project))
+            let action = ProjectActions.delete(project)
+            projectsStore.dispatch(action)
         }
+        let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
+            let project = projectsStore.state.projects[indexPath.row]
+            let routes: [RouteElementIdentifier] = [
+                RouteIdentifiers.HomeViewController.rawValue,
+                RouteIdentifiers.AddProjectViewController.rawValue
+            ]
+            let routeAction = SetRouteAction(routes)
+            let setDataAction = SetRouteSpecificData(route: routes, data: project)
+            projectsStore.dispatch(setDataAction)
+            projectsStore.dispatch(routeAction)
+        }
+        return [updateAction, deleteAction]
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
