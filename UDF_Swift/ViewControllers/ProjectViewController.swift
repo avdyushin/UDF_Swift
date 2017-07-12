@@ -12,8 +12,10 @@ import ReSwiftRouter
 
 class ProjectViewController: UITableViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var project: Project! {
+        didSet {
+            self.title = project.title
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -21,12 +23,14 @@ class ProjectViewController: UITableViewController {
 
         projectsStore.subscribe(self) { state in
             state.select { currentState in
-                let currentProject: Project? = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route)
-                self.title = currentProject?.title
+                if let project: Project = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route) {
+                    self.project = project
+                }
                 return currentState
             }
         }
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -40,17 +44,48 @@ class ProjectViewController: UITableViewController {
         }
     }
 
+    @IBAction func onAddTapped(_ sender: Any) {
+        let routes: [RouteElementIdentifier] = [
+            RouteIdentifiers.HomeViewController.rawValue,
+            RouteIdentifiers.ProjectViewController.rawValue,
+            RouteIdentifiers.AddItemViewController.rawValue
+        ]
+        let setDataAction = SetRouteSpecificData(route: routes, data: Item())
+        projectsStore.dispatch(setDataAction)
+        projectsStore.dispatch(SetRouteAction(routes))
+//        projectsStore.dispatch(ItemActions.update(project, Item(), Double(arc4random_uniform(100)), Date(), "Notes"))
+    }
+
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return project.items.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
+        let item = project.items[indexPath.row]
+        cell.textLabel?.text = item.amount.description
+        cell.detailTextLabel?.text = item.timestamp.description
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
+            let item = self.project.items[indexPath.row]
+            let action = ItemActions.delete(item)
+            projectsStore.dispatch(action)
+        }
+        let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
+            print("TODO:")
+        }
+        return [updateAction, deleteAction]
     }
 
 }
 
 extension ProjectViewController: StoreSubscriber {
     func newState(state: MainState) {
-
+        self.tableView.reloadData()
     }
 }

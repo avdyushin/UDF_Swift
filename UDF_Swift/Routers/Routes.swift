@@ -13,10 +13,14 @@ enum RouteIdentifiers: RouteElementIdentifier {
     case HomeViewController
     case AddProjectViewController
     case ProjectViewController
+    case AddItemViewController
 }
 
 struct AddProjectRoutable: Routable {}
-struct ProjectRoutable: Routable {}
+struct AddItemRoutable: Routable {}
+
+struct ProjectRoutable: Routable {
+}
 
 struct HomeViewRoutable: Routable {
     let window: UIWindow
@@ -45,6 +49,12 @@ struct HomeViewRoutable: Routable {
             }
             completionHandler()
             return ProjectRoutable()
+        case RouteIdentifiers.AddItemViewController.rawValue:
+            if let nav = self.window.rootViewController as? UINavigationController {
+                nav.pushViewController(viewController, animated: animated)
+            }
+            completionHandler()
+            return AddItemRoutable()
         default: ()
         }
         fatalError("Push route `\(routeElementIdentifier)` not found!")
@@ -53,7 +63,8 @@ struct HomeViewRoutable: Routable {
     func popRouteSegment(_ routeElementIdentifier: RouteElementIdentifier, animated: Bool, completionHandler: @escaping RoutingCompletionHandler) {
         switch routeElementIdentifier {
         case RouteIdentifiers.AddProjectViewController.rawValue,
-             RouteIdentifiers.ProjectViewController.rawValue:
+             RouteIdentifiers.ProjectViewController.rawValue,
+             RouteIdentifiers.AddItemViewController.rawValue:
             completionHandler()
             return
         default: ()

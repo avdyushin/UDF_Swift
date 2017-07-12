@@ -17,7 +17,7 @@ class MainState: NSObject, StateType, HasNavigationState {
     let realm = try! Realm()
 
     init(navigationState: NavigationState = NavigationState()) {
-        self.projects = realm.objects(Project.self)
+        self.projects = realm.objects(Project.self).sorted(byKeyPath: "updatedAt", ascending: false)
         self.navigationState = navigationState
     }
 

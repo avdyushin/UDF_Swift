@@ -18,6 +18,7 @@ class AddProjectViewController: UITableViewController {
 
     private let frequencies = Project.Frequency.all
     private var frequencyIndex = 0
+
     private var project: Project? = nil {
         didSet {
             if let project = project {
@@ -49,27 +50,21 @@ class AddProjectViewController: UITableViewController {
         projectsStore.unsubscribe(self)
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     @IBAction func onCancelTapped(_ sender: Any) {
         routeBack()
     }
 
     @IBAction func onSaveTapped(_ sender: Any) {
-        guard let title = titleLabel.text,
-              let units = unitsLabel.text else {
+        guard let title = titleLabel.text, !title.isEmpty else {
+            let alert = UIAlertController(title: "Title shouldn't be empty", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
             return
         }
         let frequency = frequencies[frequencyIndex]
 
         if let project = project {
-            let action = ProjectActions.update(project, title, frequency, units)
+            let action = ProjectActions.update(project, title, frequency, unitsLabel.text ?? "")
             projectsStore.dispatch(action)
             routeBack()
         }

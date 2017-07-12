@@ -29,6 +29,7 @@
 		C3F883851F151849006164CC /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883841F151849006164CC /* Realm.framework */; };
 		C3F883861F151849006164CC /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883841F151849006164CC /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3F883881F152782006164CC /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F883871F152782006164CC /* ProjectViewController.swift */; };
+		C3F883951F166658006164CC /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3F883941F166658006164CC /* AddItemViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		C3F883811F1513AB006164CC /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		C3F883841F151849006164CC /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		C3F883871F152782006164CC /* ProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
+		C3F883941F166658006164CC /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +195,7 @@
 				C3E450F01F14BC690020A603 /* HomeViewController.swift */,
 				C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */,
 				C3F883871F152782006164CC /* ProjectViewController.swift */,
+				C3F883941F166658006164CC /* AddItemViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */,
 				C3E450F71F14BED70020A603 /* Project.swift in Sources */,
 				C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */,
+				C3F883951F166658006164CC /* AddItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

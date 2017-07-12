@@ -15,24 +15,41 @@ struct ProjectReducer {
     static func reduce(action: Action, state: MainState?) -> MainState {
         let navigationState = NavigationReducer.handleAction(action, state: state?.navigationState)
 
-        guard let action = action as? ProjectActions else {
-            return MainState(navigationState: navigationState)
-        }
-
         let realm = try! Realm()
         switch action {
-        case .update(let project, let title, let frequence, let units):
-            try! realm.write {
-                realm.add(project)
-                project.title = title
-                project.frequency = frequence
-                project.units = units
+        case let action as ProjectActions:
+            switch action {
+            case .update(let project, let title, let frequence, let units):
+                try! realm.write {
+                    realm.add(project)
+                    project.title = title
+                    project.frequency = frequence
+                    project.units = units
+                }
+            case .delete(let project):
+                try! realm.write {
+                    realm.delete(project)
+                }
             }
-        case .delete(let project):
-            try! realm.write {
-                realm.delete(project)
+        case let action as ItemActions:
+            switch action {
+            case .update(let project, let item, let amount, let timestamp, let comment):
+                try! realm.write {
+                    project.items.append(item)
+                    project.updatedAt = Date()
+                    item.amount = amount
+                    item.timestamp = timestamp
+                    item.comment = comment
+                }
+            case .delete(let item):
+                try! realm.write {
+                    realm.delete(item)
+                }
             }
+        default:
+            ()
         }
+
         return MainState(navigationState: navigationState)
     }
 }

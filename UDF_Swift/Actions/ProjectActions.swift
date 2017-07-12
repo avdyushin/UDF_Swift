@@ -14,3 +14,8 @@ enum ProjectActions: Action {
     case update(Project, String, Project.Frequency, String)
     case delete(Project)
 }
+
+enum ItemActions: Action {
+    case update(Project, Item, Double, Date, String?)
+    case delete(Item)
+}
