@@ -50,10 +50,9 @@ class ProjectViewController: UITableViewController {
             RouteIdentifiers.ProjectViewController.rawValue,
             RouteIdentifiers.AddItemViewController.rawValue
         ]
-        let setDataAction = SetRouteSpecificData(route: routes, data: Item())
+        let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: Item()))
         projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
-//        projectsStore.dispatch(ItemActions.update(project, Item(), Double(arc4random_uniform(100)), Date(), "Notes"))
     }
 
     // MARK: - Table view data source
@@ -77,7 +76,15 @@ class ProjectViewController: UITableViewController {
             projectsStore.dispatch(action)
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
-            print("TODO:")
+            let item = self.project.items[indexPath.row]
+            let routes: [RouteElementIdentifier] = [
+                RouteIdentifiers.HomeViewController.rawValue,
+                RouteIdentifiers.ProjectViewController.rawValue,
+                RouteIdentifiers.AddItemViewController.rawValue
+            ]
+            let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: self.project, item: item))
+            projectsStore.dispatch(setDataAction)
+            projectsStore.dispatch(SetRouteAction(routes))
         }
         return [updateAction, deleteAction]
     }

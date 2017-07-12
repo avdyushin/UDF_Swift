@@ -19,3 +19,8 @@ enum ItemActions: Action {
     case update(Project, Item, Double, Date, String?)
     case delete(Item)
 }
+
+struct ProjectItemPair {
+    let project: Project
+    let item: Item
+}

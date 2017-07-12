@@ -35,7 +35,10 @@ struct ProjectReducer {
             switch action {
             case .update(let project, let item, let amount, let timestamp, let comment):
                 try! realm.write {
-                    project.items.append(item)
+                    realm.add(item)
+                    if !project.items.contains(item) {
+                        project.items.append(item)
+                    }
                     project.updatedAt = Date()
                     item.amount = amount
                     item.timestamp = timestamp

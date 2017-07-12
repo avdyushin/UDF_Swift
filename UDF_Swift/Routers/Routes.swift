@@ -20,6 +20,25 @@ struct AddProjectRoutable: Routable {}
 struct AddItemRoutable: Routable {}
 
 struct ProjectRoutable: Routable {
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let viewController: UIViewController
+
+    func pushRouteSegment(_ routeElementIdentifier: RouteElementIdentifier, animated: Bool, completionHandler: @escaping RoutingCompletionHandler) -> Routable {
+        let viewController = storyboard.instantiateViewController(withIdentifier: routeElementIdentifier)
+        let nav = UINavigationController(rootViewController: viewController)
+        self.viewController.present(nav, animated: animated, completion: completionHandler)
+        return AddItemRoutable()
+    }
+
+    func popRouteSegment(_ routeElementIdentifier: RouteElementIdentifier, animated: Bool, completionHandler: @escaping RoutingCompletionHandler) {
+        print("_pop \(routeElementIdentifier)")
+        completionHandler()
+    }
+    func changeRouteSegment(_ from: RouteElementIdentifier, to: RouteElementIdentifier, animated: Bool, completionHandler: @escaping RoutingCompletionHandler) -> Routable {
+        print("_change \(from) to \(to)")
+        completionHandler()
+        return self
+    }
 }
 
 struct HomeViewRoutable: Routable {
@@ -48,13 +67,7 @@ struct HomeViewRoutable: Routable {
                 nav.pushViewController(viewController, animated: animated)
             }
             completionHandler()
-            return ProjectRoutable()
-        case RouteIdentifiers.AddItemViewController.rawValue:
-            if let nav = self.window.rootViewController as? UINavigationController {
-                nav.pushViewController(viewController, animated: animated)
-            }
-            completionHandler()
-            return AddItemRoutable()
+            return ProjectRoutable(viewController: viewController)
         default: ()
         }
         fatalError("Push route `\(routeElementIdentifier)` not found!")

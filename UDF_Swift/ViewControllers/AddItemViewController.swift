@@ -15,7 +15,8 @@ class AddItemViewController: UIViewController {
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
 
-    private var item: Item? {
+    private var project: Project!
+    private var item: Item! {
         didSet {
             amountTextField.text = item?.amount.description
             datePicker.date = item?.timestamp ?? Date()
@@ -27,7 +28,14 @@ class AddItemViewController: UIViewController {
 
         projectsStore.subscribe(self) { state in
             state.select { currentState in
-                self.item = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route)
+                if let projectItem: ProjectItemPair? = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route) {
+                    if let project = projectItem?.project {
+                        self.project = project
+                    }
+                    if let item = projectItem?.item {
+                        self.item = item
+                    }
+                }
                 return currentState
             }
         }
@@ -43,7 +51,9 @@ class AddItemViewController: UIViewController {
     }
 
     @IBAction func onSaveTapped(_ sender: Any) {
-        print("TODO")
+        let action = ItemActions.update(project, item, Double(amountTextField.text ?? "0") ?? 0, datePicker.date, "")
+        projectsStore.dispatch(action)
+        routeBack()
     }
 
     func routeBack() {
