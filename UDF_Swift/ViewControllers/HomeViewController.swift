@@ -7,18 +7,36 @@
 //
 
 import UIKit
+import RealmSwift
 import ReSwift
 import ReSwiftRouter
 
 class HomeViewController: UITableViewController {
 
+    fileprivate var notificationToken: NotificationToken?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         projectsStore.subscribe(self)
+        notificationToken = projectsStore.state.projects.addNotificationBlock { changes in
+            switch changes {
+            case .initial:
+                self.tableView.reloadData()
+            case .update(_, let deletions, let insertions, let modifications):
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: insertions.map {IndexPath(row: $0, section: 0)}, with: .automatic)
+                self.tableView.reloadRows(at: modifications.map {IndexPath(row: $0, section: 0)}, with: .automatic)
+                self.tableView.deleteRows(at: deletions.map {IndexPath(row: $0, section: 0)}, with: .automatic)
+                self.tableView.endUpdates()
+            default:
+                ()
+            }
+        }
     }
 
     deinit {
         projectsStore.unsubscribe(self)
+        notificationToken?.stop()
     }
 
     @IBAction func onAddTapped(_ sender: Any) {
@@ -82,8 +100,5 @@ class HomeViewController: UITableViewController {
 }
 
 extension HomeViewController: StoreSubscriber {
-    typealias StoreSubscriberStateType = MainState
-    func newState(state: MainState) {
-        self.tableView.reloadData()
-    }
+    func newState(state: MainState) { }
 }
