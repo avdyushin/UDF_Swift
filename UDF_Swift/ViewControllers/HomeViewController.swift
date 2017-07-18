@@ -59,7 +59,7 @@ class HomeViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath)
         let project = projectsStore.state.projects[indexPath.row]
         cell.textLabel?.text = project.title
-        cell.detailTextLabel?.text = "\(project.frequency) in \(project.units), items = \(project.items.count)"
+        cell.detailTextLabel?.text = NSString(format: "%.2f %@", project.totalAmount, project.units) as String
         return cell
     }
 

@@ -26,6 +26,12 @@ class Project: Object {
         }
     }
 
+    var totalAmount: Double {
+        return items.reduce(0.0) { (total, item) -> Double in
+            return total + item.amount
+        }
+    }
+
     private var _frequency = Frequency.daily
     var frequency: Frequency {
         get {

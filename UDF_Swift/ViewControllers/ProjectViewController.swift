@@ -23,7 +23,10 @@ class ProjectViewController: UITableViewController {
 
     var project: Project? {
         didSet {
-            self.title = project?.title
+
+            if let project = project {
+                self.title = "\(project.frequency) \(project.title)"
+            }
 
             notificationToken = project?.items.addNotificationBlock { changes in
                 switch changes {
