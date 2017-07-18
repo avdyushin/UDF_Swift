@@ -13,7 +13,9 @@ import ReSwiftRouter
 class AddItemViewController: UIViewController {
 
     @IBOutlet weak var amountTextField: UITextField!
+    @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet var pickerView: UIView!
 
     private var project: Project!
     private var item: Item! {
@@ -23,8 +25,23 @@ class AddItemViewController: UIViewController {
         }
     }
 
+    lazy var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.YYYY"
+        return df
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dateTextField.inputView = pickerView
+        onDateChanged(datePicker)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        amountTextField.becomeFirstResponder()
 
         projectsStore.subscribe(self) { state in
             state.select { currentState in
@@ -43,6 +60,14 @@ class AddItemViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        amountTextField.resignFirstResponder()
+        dateTextField.resignFirstResponder()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
         projectsStore.unsubscribe(self)
     }
 
@@ -54,6 +79,10 @@ class AddItemViewController: UIViewController {
         let action = ItemActions.update(project, item, Double(amountTextField.text ?? "0") ?? 0, datePicker.date, "")
         projectsStore.dispatch(action)
         routeBack()
+    }
+
+    @IBAction func onDateChanged(_ sender: Any) {
+        dateTextField.text = dateFormatter.string(from: datePicker.date)
     }
 
     func routeBack() {

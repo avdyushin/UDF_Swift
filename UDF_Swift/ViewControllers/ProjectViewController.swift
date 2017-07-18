@@ -13,6 +13,12 @@ import ReSwiftRouter
 
 class ProjectViewController: UITableViewController {
 
+    lazy var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.YYYY"
+        return df
+    }()
+
     fileprivate var notificationToken: NotificationToken?
 
     var project: Project? {
@@ -83,6 +89,21 @@ class ProjectViewController: UITableViewController {
         projectsStore.dispatch(SetRouteAction(routes))
     }
 
+    func editItem(at indexPath: IndexPath) {
+        guard let project = self.project else {
+            return
+        }
+        let item = project.items[indexPath.row]
+        let routes: [RouteElementIdentifier] = [
+            RouteIdentifiers.HomeViewController.rawValue,
+            RouteIdentifiers.ProjectViewController.rawValue,
+            RouteIdentifiers.AddItemViewController.rawValue
+        ]
+        let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: item))
+        projectsStore.dispatch(setDataAction)
+        projectsStore.dispatch(SetRouteAction(routes))
+    }
+
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -94,8 +115,8 @@ class ProjectViewController: UITableViewController {
         guard let item = project?.items[indexPath.row] else {
             return cell
         }
-        cell.textLabel?.text = item.amount.description
-        cell.detailTextLabel?.text = item.timestamp.description
+        cell.textLabel?.text = NSString(format: "%.2f", item.amount) as String
+        cell.detailTextLabel?.text = dateFormatter.string(from: item.timestamp)
         return cell
     }
 
@@ -108,20 +129,14 @@ class ProjectViewController: UITableViewController {
             projectsStore.dispatch(action)
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
-            guard let project = self.project else {
-                return
-            }
-            let item = project.items[indexPath.row]
-            let routes: [RouteElementIdentifier] = [
-                RouteIdentifiers.HomeViewController.rawValue,
-                RouteIdentifiers.ProjectViewController.rawValue,
-                RouteIdentifiers.AddItemViewController.rawValue
-            ]
-            let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: item))
-            projectsStore.dispatch(setDataAction)
-            projectsStore.dispatch(SetRouteAction(routes))
+            self.editItem(at: indexPath)
         }
         return [updateAction, deleteAction]
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.editItem(at: indexPath)
     }
 }
 
