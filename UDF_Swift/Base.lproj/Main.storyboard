@@ -468,7 +468,7 @@
             <objects>
                 <navigationController storyboardIdentifier="NavHomeViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="A9g-NH-bWZ" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ZEb-Qt-JfR">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ZEb-Qt-JfR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
