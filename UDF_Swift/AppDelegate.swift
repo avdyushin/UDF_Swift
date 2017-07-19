@@ -43,6 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
 
+        UINavigationBar.appearance().barStyle = .black
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().backgroundColor = .darkGray
+        UINavigationBar.appearance().titleTextAttributes = [
+            NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 15) ?? UIFont.systemFont(ofSize: 15),
+            NSForegroundColorAttributeName: UIColor.white
+        ]
+
         window?.makeKeyAndVisible()
 
         return true

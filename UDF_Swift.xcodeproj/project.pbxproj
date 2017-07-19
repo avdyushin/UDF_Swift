@@ -17,6 +17,8 @@
 		C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */; };
 		C39B077C1F0A5F850003838D /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C39B077B1F0A5F850003838D /* ReSwift.framework */; };
 		C39B077D1F0A5F850003838D /* ReSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C39B077B1F0A5F850003838D /* ReSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C3CA377B1F1F62A9003B1EE8 /* ProjectViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA377A1F1F62A9003B1EE8 /* ProjectViewCell.swift */; };
+		C3CA377D1F1F62B6003B1EE8 /* ItemViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3CA377C1F1F62B6003B1EE8 /* ItemViewCell.swift */; };
 		C3E450F11F14BC690020A603 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F01F14BC690020A603 /* HomeViewController.swift */; };
 		C3E450F41F14BEA10020A603 /* MainState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F31F14BEA10020A603 /* MainState.swift */; };
 		C3E450F71F14BED70020A603 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F61F14BED70020A603 /* Project.swift */; };
@@ -73,6 +75,8 @@
 		C38774D51F14D5E900C1E8F4 /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		C39B077B1F0A5F850003838D /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = ../Carthage/Build/iOS/ReSwift.framework; sourceTree = "<group>"; };
+		C3CA377A1F1F62A9003B1EE8 /* ProjectViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectViewCell.swift; sourceTree = "<group>"; };
+		C3CA377C1F1F62B6003B1EE8 /* ItemViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewCell.swift; sourceTree = "<group>"; };
 		C3E450F01F14BC690020A603 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C3E450F31F14BEA10020A603 /* MainState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainState.swift; sourceTree = "<group>"; };
 		C3E450F61F14BED70020A603 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -136,6 +140,7 @@
 				C3E450ED1F14BC690020A603 /* Services */,
 				C3E450F21F14BC770020A603 /* Resources */,
 				C3E450EE1F14BC690020A603 /* States */,
+				C3CA37791F1F628F003B1EE8 /* Views */,
 				C3E450EF1F14BC690020A603 /* ViewControllers */,
 			);
 			path = UDF_Swift;
@@ -148,6 +153,15 @@
 				C302D8D71F0512E200AF5D96 /* Info.plist */,
 			);
 			path = UDF_SwiftTests;
+			sourceTree = "<group>";
+		};
+		C3CA37791F1F628F003B1EE8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C3CA377A1F1F62A9003B1EE8 /* ProjectViewCell.swift */,
+				C3CA377C1F1F62B6003B1EE8 /* ItemViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C3E450EA1F14BC690020A603 /* Actions */ = {
@@ -344,8 +358,10 @@
 				C302D8C11F0512E200AF5D96 /* AppDelegate.swift in Sources */,
 				C38774D41F14D11600C1E8F4 /* ProjectReducer.swift in Sources */,
 				C3E450F41F14BEA10020A603 /* MainState.swift in Sources */,
+				C3CA377B1F1F62A9003B1EE8 /* ProjectViewCell.swift in Sources */,
 				C3E450F11F14BC690020A603 /* HomeViewController.swift in Sources */,
 				C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */,
+				C3CA377D1F1F62B6003B1EE8 /* ItemViewCell.swift in Sources */,
 				C3E450F71F14BED70020A603 /* Project.swift in Sources */,
 				C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */,
 				C3F883951F166658006164CC /* AddItemViewController.swift in Sources */,

@@ -17,6 +17,10 @@ class HomeViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.estimatedRowHeight = 72
+        tableView.rowHeight = UITableViewAutomaticDimension
+
         projectsStore.subscribe(self)
         notificationToken = projectsStore.state.projects.addNotificationBlock { changes in
             switch changes {
@@ -32,6 +36,10 @@ class HomeViewController: UITableViewController {
                 ()
             }
         }
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     deinit {
@@ -56,10 +64,8 @@ class HomeViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath)
-        let project = projectsStore.state.projects[indexPath.row]
-        cell.textLabel?.text = project.title
-        cell.detailTextLabel?.text = NSString(format: "%.2f %@", project.totalAmount, project.units) as String
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath) as! ProjectViewCell
+        cell.project = projectsStore.state.projects[indexPath.row]
         return cell
     }
 

@@ -32,6 +32,19 @@ class Project: Object {
         }
     }
 
+    var totalAmountString: String {
+        return amountFormatter.string(from: NSNumber(value: totalAmount)) ?? totalAmount.description
+    }
+
+    var amountFormatter: NumberFormatter {
+        let nf = NumberFormatter()
+        nf.positiveFormat = "¤ #,##0.##"
+        nf.negativeFormat = "¤ -#,##0.##"
+        nf.currencySymbol = self.units
+        nf.numberStyle = .currency
+        return nf
+    }
+
     private var _frequency = Frequency.daily
     var frequency: Frequency {
         get {

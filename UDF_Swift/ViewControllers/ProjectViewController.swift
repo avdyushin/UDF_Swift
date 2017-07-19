@@ -25,7 +25,7 @@ class ProjectViewController: UITableViewController {
         didSet {
 
             if let project = project {
-                self.title = "\(project.frequency) \(project.title)"
+                self.title = "\(project.frequency) \(project.title)".uppercased()
             }
 
             notificationToken = project?.items.addNotificationBlock { changes in
@@ -118,7 +118,7 @@ class ProjectViewController: UITableViewController {
         guard let item = project?.items[indexPath.row] else {
             return cell
         }
-        cell.textLabel?.text = NSString(format: "%.2f", item.amount) as String
+        cell.textLabel?.text = project?.amountFormatter.string(from: NSNumber(value: item.amount)) ?? item.amount.description
         cell.detailTextLabel?.text = dateFormatter.string(from: item.timestamp)
         return cell
     }
