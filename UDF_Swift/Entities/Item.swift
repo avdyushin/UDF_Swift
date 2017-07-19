@@ -11,9 +11,15 @@ import RealmSwift
 
 class Item: Object {
 
+    static var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.YYYY"
+        return df
+    }()
+
     dynamic var id = UUID().uuidString
     dynamic var timestamp = Date()
-    dynamic var amount = 0.0
+    dynamic var amount = -1.0
     dynamic var comment: String?
     
 }

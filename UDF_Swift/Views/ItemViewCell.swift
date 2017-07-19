@@ -10,15 +10,39 @@ import UIKit
 
 class ItemViewCell: UITableViewCell {
 
+    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+
+    var numberFormatter: NumberFormatter?
+    var item: Item? {
+        didSet {
+            reloadData()
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        reloadData()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    override func prepareForReuse() {
+        super.prepareForReuse()
 
-        // Configure the view for the selected state
+        clearData()
     }
 
+    func clearData() {
+        amountLabel.text = nil
+        dateLabel.text = nil
+    }
+
+    func reloadData() {
+        guard let item = item else {
+            clearData()
+            return
+        }
+
+        amountLabel.text = numberFormatter?.string(from: NSNumber(value: item.amount))
+        dateLabel.text = Item.dateFormatter.string(from: item.timestamp)
+    }
 }

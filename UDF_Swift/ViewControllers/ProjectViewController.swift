@@ -13,12 +13,6 @@ import ReSwiftRouter
 
 class ProjectViewController: UITableViewController {
 
-    lazy var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "dd.MM.YYYY"
-        return df
-    }()
-
     fileprivate var notificationToken: NotificationToken?
 
     var project: Project? {
@@ -114,14 +108,22 @@ class ProjectViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemViewCell
         guard let item = project?.items[indexPath.row] else {
             return cell
         }
-        cell.textLabel?.text = project?.amountFormatter.string(from: NSNumber(value: item.amount)) ?? item.amount.description
-        cell.detailTextLabel?.text = dateFormatter.string(from: item.timestamp)
+        cell.numberFormatter = project?.amountFormatter
+        cell.item = item
         return cell
     }
+
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row % 2 == 0 {
+//            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        } else {
+//            cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+//        }
+//    }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
@@ -130,9 +132,11 @@ class ProjectViewController: UITableViewController {
             }
             let action = ItemActions.delete(item)
             projectsStore.dispatch(action)
+            tableView.isEditing = false
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             self.editItem(at: indexPath)
+            tableView.isEditing = false
         }
         return [updateAction, deleteAction]
     }

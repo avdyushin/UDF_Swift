@@ -20,7 +20,13 @@ class AddItemViewController: UIViewController {
     private var project: Project!
     private var item: Item! {
         didSet {
-            amountTextField.text = item?.amount.description
+            if let amount = item?.amount, amount > 0 {
+                amountTextField.text = amount.description
+                self.title = "EDIT ITEM"
+            } else {
+                amountTextField.text = nil
+                self.title = "NEW ITEM"
+            }
             datePicker.date = item?.timestamp ?? Date()
         }
     }

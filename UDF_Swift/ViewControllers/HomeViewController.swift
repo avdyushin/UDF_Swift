@@ -69,11 +69,20 @@ class HomeViewController: UITableViewController {
         return cell
     }
 
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        if indexPath.row % 2 == 0 {
+//            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+//        } else {
+//            cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
+//        }
+//    }
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let project = projectsStore.state.projects[indexPath.row]
             let action = ProjectActions.delete(project)
             projectsStore.dispatch(action)
+            tableView.isEditing = false
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             let project = projectsStore.state.projects[indexPath.row]
@@ -85,6 +94,7 @@ class HomeViewController: UITableViewController {
             let setDataAction = SetRouteSpecificData(route: routes, data: project)
             projectsStore.dispatch(setDataAction)
             projectsStore.dispatch(routeAction)
+            tableView.isEditing = false
         }
         return [updateAction, deleteAction]
     }

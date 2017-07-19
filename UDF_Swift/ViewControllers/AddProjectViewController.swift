@@ -31,6 +31,7 @@ class AddProjectViewController: UITableViewController {
                 frequencyLabel.text = frequencies[frequencyIndex].description
                 unitsLabel.text = ""
             }
+            self.title = project?.title.isEmpty == true ? "NEW PROJECT" : "EDIT PROJECT"
         }
     }
 
@@ -45,8 +46,8 @@ class AddProjectViewController: UITableViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         projectsStore.unsubscribe(self)
     }
 
