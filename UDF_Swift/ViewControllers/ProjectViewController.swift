@@ -34,20 +34,35 @@ class ProjectViewController: UITableViewController {
                 switch changes {
                 case .initial:
                     self.tableView.reloadData()
-                case .update(_, _, let insertions, _):
-                    let inserted = insertions.flatMap { index -> IndexPath? in
+                case .update(_, let deletions, let insertions, let modifications):
+                    let inserted = insertions.flatMap { index -> (IndexPath, Int)? in
                         guard let item = self.project?.items[index] else {
                             return nil
                         }
-                        if let row = self.project?.items.filter("sectionKey == %@", item.sectionKey).index(of: item),
-                           let section = self.sectionNames.index(of: item.sectionKey) {
-                            return IndexPath(row: row, section: section)
+                        let grouped = self.project?.items.filter("sectionKey == %@", item.sectionKey)
+                        if let row = grouped?.index(of: item),
+                           let section = self.sectionNames.index(of: item.sectionKey),
+                           let count = grouped?.count {
+                            return (IndexPath(row: row, section: section), count)
                         }
                         return nil
                     }
-                    print(inserted)
+                    print(deletions, inserted, modifications)
+                    
                     if inserted.count > 0 {
-                        self.tableView.insertRows(at: inserted, with: .automatic)
+                        self.tableView.beginUpdates()
+                    }
+
+                    inserted.forEach { (indexPath, sectionsCount) in
+                        if sectionsCount == 1 {
+                            self.tableView.insertSections([indexPath.section], with: .automatic)
+                        } else {
+                            self.tableView.insertRows(at: [indexPath], with: .automatic)
+                        }
+                    }
+
+                    if inserted.count > 0 || deletions.count > 0 || modifications.count > 0 {
+                        self.tableView.endUpdates()
                     }
                 default:
                     ()
@@ -107,7 +122,7 @@ class ProjectViewController: UITableViewController {
         guard let project = self.project else {
             return
         }
-        let item = project.items[indexPath.row]
+        let item = project.items.filter("sectionKey == %@", sectionNames[indexPath.section])[indexPath.row]
         let routes: [RouteElementIdentifier] = [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.ProjectViewController.rawValue,
@@ -116,6 +131,9 @@ class ProjectViewController: UITableViewController {
         let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: item))
         projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
+
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     // MARK: - Table view data source
@@ -151,11 +169,20 @@ class ProjectViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            guard let item = self.project?.items[indexPath.row] else {
+            let grouped = self.project?.items.filter("sectionKey == %@", self.sectionNames[indexPath.section])
+            guard let item = grouped?[indexPath.row],
+                  let count = grouped?.count else {
                 return
             }
+
             let action = ItemActions.delete(item)
             projectsStore.dispatch(action)
+            self.tableView.beginUpdates()
+            if count == 1 {
+                self.tableView.deleteSections([indexPath.section], with: .automatic)
+            } else {
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
             tableView.isEditing = false
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
