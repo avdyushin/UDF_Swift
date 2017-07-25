@@ -43,6 +43,6 @@ class ItemViewCell: UITableViewCell {
         }
 
         amountLabel.text = numberFormatter?.string(from: NSNumber(value: item.amount))
-        dateLabel.text = Item.dateFormatter.string(from: item.timestamp)
+        dateLabel.text = Item.dateFormatter.string(from: item.timestamp) + "" + item.sectionKey
     }
 }

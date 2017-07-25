@@ -41,7 +41,7 @@ struct ProjectReducer {
                     }
                     project.updatedAt = Date()
                     item.amount = amount
-                    item.timestamp = timestamp
+                    item.timestampValue = timestamp
                     item.comment = comment
                 }
             case .delete(let item):

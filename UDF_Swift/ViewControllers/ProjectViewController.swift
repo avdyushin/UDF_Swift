@@ -15,6 +15,14 @@ class ProjectViewController: UITableViewController {
 
     fileprivate var notificationToken: NotificationToken?
 
+    var sectionNames: [String] {
+        guard let project = project else {
+            return [String]()
+        }
+
+        return Array(Set(project.items.value(forKeyPath: "sectionKey") as! [String]))
+    }
+
     var project: Project? {
         didSet {
 
@@ -26,12 +34,21 @@ class ProjectViewController: UITableViewController {
                 switch changes {
                 case .initial:
                     self.tableView.reloadData()
-                case .update(_, let deletions, let insertions, let modifications):
-                    self.tableView.beginUpdates()
-                    self.tableView.insertRows(at: insertions.map {IndexPath(row: $0, section: 0)}, with: .automatic)
-                    self.tableView.reloadRows(at: modifications.map {IndexPath(row: $0, section: 0)}, with: .automatic)
-                    self.tableView.deleteRows(at: deletions.map {IndexPath(row: $0, section: 0)}, with: .automatic)
-                    self.tableView.endUpdates()
+                case .update(_, _, let insertions, _):
+                    let inserted = insertions.flatMap { index -> IndexPath? in
+                        guard let item = self.project?.items[index] else {
+                            return nil
+                        }
+                        if let row = self.project?.items.filter("sectionKey == %@", item.sectionKey).index(of: item),
+                           let section = self.sectionNames.index(of: item.sectionKey) {
+                            return IndexPath(row: row, section: section)
+                        }
+                        return nil
+                    }
+                    print(inserted)
+                    if inserted.count > 0 {
+                        self.tableView.insertRows(at: inserted, with: .automatic)
+                    }
                 default:
                     ()
                 }
@@ -103,18 +120,25 @@ class ProjectViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionNames.count
+    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return project?.items.count ?? 0
+        return project?.items.filter("sectionKey == %@", sectionNames[section]).count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath) as! ItemViewCell
-        guard let item = project?.items[indexPath.row] else {
+        guard let item = project?.items.filter("sectionKey == %@", sectionNames[indexPath.section])[indexPath.row] else {
             return cell
         }
         cell.numberFormatter = project?.amountFormatter
         cell.item = item
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionNames[section]
     }
 
 //    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

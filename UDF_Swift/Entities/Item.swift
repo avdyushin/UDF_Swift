@@ -17,9 +17,26 @@ class Item: Object {
         return df
     }()
 
+    static var keyFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MM-YYYY"
+        return df
+    }()
+
+    var timestampValue: Date = Date() {
+        didSet {
+            timestamp = timestampValue
+            sectionKey = Item.keyFormatter.string(from: timestamp)
+        }
+    }
+
     dynamic var id = UUID().uuidString
     dynamic var timestamp = Date()
+    dynamic var sectionKey = ""
     dynamic var amount = -1.0
     dynamic var comment: String?
-    
+
+    override static func ignoredProperties() -> [String] {
+        return ["timestampValue"]
+    }
 }
