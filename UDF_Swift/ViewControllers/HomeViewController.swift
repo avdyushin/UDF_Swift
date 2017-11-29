@@ -22,7 +22,7 @@ class HomeViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
 
         projectsStore.subscribe(self)
-        notificationToken = projectsStore.state.projects.addNotificationBlock { changes in
+        notificationToken = projectsStore.state.projects.observe { changes in
             switch changes {
             case .initial:
                 self.tableView.reloadData()
@@ -44,7 +44,7 @@ class HomeViewController: UITableViewController {
 
     deinit {
         projectsStore.unsubscribe(self)
-        notificationToken?.stop()
+        notificationToken?.invalidate()
     }
 
     @IBAction func onAddTapped(_ sender: Any) {

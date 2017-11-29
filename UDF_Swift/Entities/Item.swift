@@ -30,11 +30,11 @@ class Item: Object {
         }
     }
 
-    dynamic var id = UUID().uuidString
-    dynamic var timestamp = Date()
-    dynamic var sectionKey = ""
-    dynamic var amount = -1.0
-    dynamic var comment: String?
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var timestamp = Date()
+    @objc dynamic var sectionKey = ""
+    @objc dynamic var amount = -1.0
+    @objc dynamic var comment: String?
 
     override static func ignoredProperties() -> [String] {
         return ["timestampValue"]

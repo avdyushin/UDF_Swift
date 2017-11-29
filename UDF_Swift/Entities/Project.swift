@@ -56,13 +56,13 @@ class Project: Object {
         }
     }
 
-    private dynamic var frequencyRaw = 0
-    private dynamic var order = 0
-    dynamic var id = UUID().uuidString
-    dynamic var title = ""
-    dynamic var units = ""
-    dynamic var createdAt = Date()
-    dynamic var updatedAt = Date()
+    @objc private dynamic var frequencyRaw = 0
+    @objc private dynamic var order = 0
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var title = ""
+    @objc dynamic var units = ""
+    @objc dynamic var createdAt = Date()
+    @objc dynamic var updatedAt = Date()
     let items = List<Item>()
 
 }

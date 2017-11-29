@@ -47,8 +47,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().backgroundColor = .darkGray
         UINavigationBar.appearance().titleTextAttributes = [
-            NSFontAttributeName: UIFont(name: "Avenir-Medium", size: 15) ?? UIFont.systemFont(ofSize: 15),
-            NSForegroundColorAttributeName: UIColor.white
+            NSAttributedStringKey.font: UIFont(name: "Avenir-Medium", size: 15) ?? UIFont.systemFont(ofSize: 15),
+            NSAttributedStringKey.foregroundColor: UIColor.white
         ]
 
         window?.makeKeyAndVisible()

@@ -20,7 +20,7 @@ class ProjectViewController: UITableViewController {
             return [String]()
         }
 
-        return Array(Set(project.items.value(forKeyPath: "sectionKey") as! [String]))
+        return Array(Set(project.items.map { return $0.sectionKey }))
     }
 
     var project: Project? {
@@ -30,7 +30,7 @@ class ProjectViewController: UITableViewController {
                 self.title = "\(project.frequency) \(project.title)".uppercased()
             }
 
-            notificationToken = project?.items.addNotificationBlock { changes in
+            notificationToken = project?.items.observe { changes in
                 switch changes {
                 case .initial:
                     self.tableView.reloadData()
@@ -101,7 +101,7 @@ class ProjectViewController: UITableViewController {
     }
 
     deinit {
-        notificationToken?.stop()
+        notificationToken?.invalidate()
     }
 
     @IBAction func onAddTapped(_ sender: Any) {
