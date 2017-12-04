@@ -33,7 +33,7 @@ struct ProjectReducer {
             }
         case let action as ItemActions:
             switch action {
-            case .update(let project, let item, let amount, let timestamp, let comment):
+            case .update(let item, let project, let amount, let timestamp, let comment):
                 try! realm.write {
                     realm.add(item)
                     if !project.items.contains(item) {

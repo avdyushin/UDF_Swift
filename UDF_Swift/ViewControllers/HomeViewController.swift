@@ -21,7 +21,6 @@ class HomeViewController: UITableViewController {
         tableView.estimatedRowHeight = 72
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        projectsStore.subscribe(self)
         notificationToken = projectsStore.state.projects.observe { changes in
             switch changes {
             case .initial:
@@ -43,7 +42,6 @@ class HomeViewController: UITableViewController {
     }
 
     deinit {
-        projectsStore.unsubscribe(self)
         notificationToken?.invalidate()
     }
 
@@ -68,14 +66,6 @@ class HomeViewController: UITableViewController {
         cell.project = projectsStore.state.projects[indexPath.row]
         return cell
     }
-
-//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.row % 2 == 0 {
-//            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-//        } else {
-//            cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-//        }
-//    }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
@@ -113,8 +103,4 @@ class HomeViewController: UITableViewController {
         projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(routeAction)
     }
-}
-
-extension HomeViewController: StoreSubscriber {
-    func newState(state: MainState) { }
 }

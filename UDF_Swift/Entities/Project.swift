@@ -16,12 +16,9 @@ class Project: Object {
         static var all = [Frequency.daily, Frequency.monthly, Frequency.yearly]
         var description: String {
             switch self {
-            case .daily:
-                return "Daily"
-            case .monthly:
-                return "Monthly"
-            case .yearly:
-                return "Yearly"
+            case .daily: return "Daily"
+            case .monthly: return "Monthly"
+            case .yearly: return "Yearly"
             }
         }
     }
@@ -33,7 +30,7 @@ class Project: Object {
     }
 
     var totalAmountString: String {
-        return amountFormatter.string(from: NSNumber(value: totalAmount)) ?? totalAmount.description
+        return "\(totalAmount)"
     }
 
     var amountFormatter: NumberFormatter {

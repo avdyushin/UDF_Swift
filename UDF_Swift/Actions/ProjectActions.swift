@@ -11,12 +11,12 @@ import ReSwift
 import ReSwiftRouter
 
 enum ProjectActions: Action {
-    case update(Project, String, Project.Frequency, String)
+    case update(Project, title: String, frequency: Project.Frequency, units: String)
     case delete(Project)
 }
 
 enum ItemActions: Action {
-    case update(Project, Item, Double, Date, String?)
+    case update(Item, project: Project, amount: Double, timestamp: Date, notes: String?)
     case delete(Item)
 }
 

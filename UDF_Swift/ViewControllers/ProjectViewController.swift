@@ -17,7 +17,7 @@ class ProjectViewController: UITableViewController {
 
     var sectionNames: [String] {
         guard let project = project else {
-            return [String]()
+            return []
         }
 
         return Array(Set(project.items.map { return $0.sectionKey }))
@@ -25,66 +25,19 @@ class ProjectViewController: UITableViewController {
 
     var project: Project? {
         didSet {
-
             if let project = project {
-                self.title = "\(project.frequency) \(project.title)".uppercased()
-            }
-
-            notificationToken = project?.items.observe { changes in
-                switch changes {
-                case .initial:
-                    self.tableView.reloadData()
-                case .update(_, let deletions, let insertions, let modifications):
-                    let inserted = insertions.flatMap { index -> (IndexPath, Int)? in
-                        guard let item = self.project?.items[index] else {
-                            return nil
-                        }
-                        let grouped = self.project?.items.filter("sectionKey == %@", item.sectionKey)
-                        if let row = grouped?.index(of: item),
-                           let section = self.sectionNames.index(of: item.sectionKey),
-                           let count = grouped?.count {
-                            return (IndexPath(row: row, section: section), count)
-                        }
-                        return nil
-                    }
-                    print(deletions, inserted, modifications)
-                    
-                    if inserted.count > 0 {
-                        self.tableView.beginUpdates()
-                    }
-
-                    inserted.forEach { (indexPath, sectionsCount) in
-                        if sectionsCount == 1 {
-                            self.tableView.insertSections([indexPath.section], with: .automatic)
-                        } else {
-                            self.tableView.insertRows(at: [indexPath], with: .automatic)
-                        }
-                    }
-
-                    if inserted.count > 0 || deletions.count > 0 || modifications.count > 0 {
-                        self.tableView.endUpdates()
-                    }
-                default:
-                    ()
+                self.title = "\(project.frequency) \(project.title) in \(project.units)".uppercased()
+                notificationToken = project.items.observe { [weak self] changes in
+                    self?.tableView.reloadData()
                 }
             }
-
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        projectsStore.subscribe(self) { state in
-            state.select { currentState in
-                if let project: Project = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route) {
-                    if self.project?.id != project.id {
-                        self.project = project
-                    }
-                }
-                return currentState
-            }
-        }
+        projectsStore.subscribe(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -159,30 +112,15 @@ class ProjectViewController: UITableViewController {
         return sectionNames[section]
     }
 
-//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.row % 2 == 0 {
-//            cell.contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-//        } else {
-//            cell.contentView.backgroundColor = UIColor(white: 0.9, alpha: 1)
-//        }
-//    }
-
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let grouped = self.project?.items.filter("sectionKey == %@", self.sectionNames[indexPath.section])
-            guard let item = grouped?[indexPath.row],
-                  let count = grouped?.count else {
+            guard let item = grouped?[indexPath.row] else {
                 return
             }
 
             let action = ItemActions.delete(item)
             projectsStore.dispatch(action)
-            self.tableView.beginUpdates()
-            if count == 1 {
-                self.tableView.deleteSections([indexPath.section], with: .automatic)
-            } else {
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
             tableView.isEditing = false
         }
         let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
@@ -199,5 +137,11 @@ class ProjectViewController: UITableViewController {
 }
 
 extension ProjectViewController: StoreSubscriber {
-    func newState(state: MainState) { }
+    func newState(state: MainState) {
+        if let project: Project = state.navigationState.getRouteSpecificState(state.navigationState.route) {
+            if self.project?.id != project.id {
+                self.project = project
+            }
+        }
+    }
 }

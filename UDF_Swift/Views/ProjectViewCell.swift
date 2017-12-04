@@ -53,8 +53,8 @@ class ProjectViewCell: UITableViewCell {
         }
 
         titleLabel?.text = project.title.uppercased()
-        subTitleLabel?.text = project.frequency.description
-        rightDetailsLabel?.text =  project.totalAmountString
+        subTitleLabel?.text = "\(project.frequency) in \(project.units)"
+        rightDetailsLabel?.text =  "∑ \(project.totalAmountString)"
         imageLabel?.text = project.title.uppercased().first?.description ?? nil
         avatarImageView?.backgroundColor = .lightGray
     }

@@ -38,12 +38,7 @@ class AddProjectViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        projectsStore.subscribe(self) { state in
-            state.select { currentState in
-                self.project = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route)
-                return currentState
-            }
-        }
+        projectsStore.subscribe(self)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -62,11 +57,14 @@ class AddProjectViewController: UITableViewController {
             present(alert, animated: true, completion: nil)
             return
         }
-        let frequency = frequencies[frequencyIndex]
 
         if let project = project {
-            let action = ProjectActions.update(project, title, frequency, unitsLabel.text ?? "")
-            projectsStore.dispatch(action)
+            projectsStore.dispatch(ProjectActions.update(
+                project,
+                title: title,
+                frequency: frequencies[frequencyIndex],
+                units: unitsLabel.text ?? ""
+            ))
             routeBack()
         }
     }
@@ -128,6 +126,6 @@ class AddProjectViewController: UITableViewController {
 
 extension AddProjectViewController: StoreSubscriber {
     func newState(state: MainState) {
-
+        self.project = state.navigationState.getRouteSpecificState(state.navigationState.route)
     }
 }

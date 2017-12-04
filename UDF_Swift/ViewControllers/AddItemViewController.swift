@@ -49,19 +49,7 @@ class AddItemViewController: UIViewController {
 
         amountTextField.becomeFirstResponder()
 
-        projectsStore.subscribe(self) { state in
-            state.select { currentState in
-                if let projectItem: ProjectItemPair? = currentState.navigationState.getRouteSpecificState(currentState.navigationState.route) {
-                    if let project = projectItem?.project {
-                        self.project = project
-                    }
-                    if let item = projectItem?.item {
-                        self.item = item
-                    }
-                }
-                return currentState
-            }
-        }
+        projectsStore.subscribe(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -82,8 +70,13 @@ class AddItemViewController: UIViewController {
     }
 
     @IBAction func onSaveTapped(_ sender: Any) {
-        let action = ItemActions.update(project, item, Double(amountTextField.text ?? "0") ?? 0, datePicker.date, "")
-        projectsStore.dispatch(action)
+        projectsStore.dispatch(ItemActions.update(
+            item,
+            project: project,
+            amount: Double(amountTextField.text ?? "0") ?? 0,
+            timestamp: datePicker.date,
+            notes: ""
+        ))
         routeBack()
     }
 
@@ -104,11 +97,17 @@ class AddItemViewController: UIViewController {
             ]))
         }
     }
-
 }
 
 extension AddItemViewController: StoreSubscriber {
     func newState(state: MainState) {
-
+        if let projectItem: ProjectItemPair? = state.navigationState.getRouteSpecificState(state.navigationState.route) {
+            if let project = projectItem?.project {
+                self.project = project
+            }
+            if let item = projectItem?.item {
+                self.item = item
+            }
+        }
     }
 }
