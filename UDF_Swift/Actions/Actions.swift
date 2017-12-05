@@ -9,16 +9,6 @@
 import Foundation
 import ReSwift
 
-struct ProjectWithItem {
-    let project: Project
-    let item: Item?
-
-    init(project: Project, item: Item? = nil) {
-        self.project = project
-        self.item = item
-    }
-}
-
 enum ProjectActions: Action {
     case create(title: String, frequency: Project.Frequency, units: String)
     case update(Project, newTitle: String, newFrequency: Project.Frequency, newUnits: String)
