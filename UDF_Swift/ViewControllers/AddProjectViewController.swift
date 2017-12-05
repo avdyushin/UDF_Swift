@@ -12,6 +12,12 @@ import ReSwiftRouter
 
 class AddProjectViewController: UITableViewController {
 
+    struct Constants {
+        static let rowIndexTitle = 0
+        static let rowIndexFrequency = 1
+        static let rowIndexUnits = 2
+    }
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var frequencyLabel: UILabel!
     @IBOutlet weak var unitsLabel: UILabel!
@@ -22,22 +28,23 @@ class AddProjectViewController: UITableViewController {
     private var project: Project? = nil {
         didSet {
             if let project = project {
+                title = "EDIT PROJECT"
                 titleLabel.text = project.title
                 frequencyIndex = project.frequency.rawValue
                 frequencyLabel.text = frequencies[frequencyIndex].description
                 unitsLabel.text = project.units
             } else {
+                title = "NEW PROJECT"
                 titleLabel.text = ""
+                frequencyIndex = 0
                 frequencyLabel.text = frequencies[frequencyIndex].description
                 unitsLabel.text = ""
             }
-            self.title = project?.title.isEmpty == true ? "NEW PROJECT" : "EDIT PROJECT"
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         projectsStore.subscribe(self)
     }
 
@@ -61,12 +68,18 @@ class AddProjectViewController: UITableViewController {
         if let project = project {
             projectsStore.dispatch(ProjectActions.update(
                 project,
+                newTitle: title,
+                newFrequency: frequencies[frequencyIndex],
+                newUnits: unitsLabel.text ?? ""
+            ))
+        } else {
+            projectsStore.dispatch(ProjectActions.create(
                 title: title,
                 frequency: frequencies[frequencyIndex],
                 units: unitsLabel.text ?? ""
             ))
-            routeBack()
         }
+        routeBack()
     }
 
     func routeBack() {
@@ -100,18 +113,18 @@ class AddProjectViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
-        case 0:
+        case Constants.rowIndexTitle:
             inputAlert(title: "Title", value: project?.title) { text in
                 if let title = text {
                     self.titleLabel.text = title
                     self.tableView.reloadData()
                 }
             }
-        case 1:
+        case Constants.rowIndexFrequency:
             frequencyIndex = (frequencyIndex + 1) % frequencies.count
             frequencyLabel.text = frequencies[frequencyIndex].description
             tableView.reloadData()
-        case 2:
+        case Constants.rowIndexUnits:
             inputAlert(title: "Units", value: project?.units) { text in
                 if let units = text {
                     self.unitsLabel.text = units

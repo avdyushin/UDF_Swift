@@ -34,16 +34,13 @@ class ProjectViewController: UITableViewController {
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
+    override func viewDidLoad() {
+        super.viewDidLoad()
         projectsStore.subscribe(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        projectsStore.unsubscribe(self)
 
         if projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
@@ -55,6 +52,7 @@ class ProjectViewController: UITableViewController {
 
     deinit {
         notificationToken?.invalidate()
+        projectsStore.unsubscribe(self)
     }
 
     @IBAction func onAddTapped(_ sender: Any) {
@@ -66,7 +64,7 @@ class ProjectViewController: UITableViewController {
             RouteIdentifiers.ProjectViewController.rawValue,
             RouteIdentifiers.AddItemViewController.rawValue
         ]
-        let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: Item()))
+        let setDataAction = SetRouteSpecificData(route: routes, data: RouteData.project(project))
         projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
     }
@@ -81,12 +79,9 @@ class ProjectViewController: UITableViewController {
             RouteIdentifiers.ProjectViewController.rawValue,
             RouteIdentifiers.AddItemViewController.rawValue
         ]
-        let setDataAction = SetRouteSpecificData(route: routes, data: ProjectItemPair(project: project, item: item))
+        let setDataAction = SetRouteSpecificData(route: routes, data: RouteData.item(item, parent: project))
         projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
-
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
     // MARK: - Table view data source
@@ -123,11 +118,11 @@ class ProjectViewController: UITableViewController {
             projectsStore.dispatch(action)
             tableView.isEditing = false
         }
-        let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             self.editItem(at: indexPath)
             tableView.isEditing = false
         }
-        return [updateAction, deleteAction]
+        return [editAction, deleteAction]
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -139,9 +134,7 @@ class ProjectViewController: UITableViewController {
 extension ProjectViewController: StoreSubscriber {
     func newState(state: MainState) {
         if let project: Project = state.navigationState.getRouteSpecificState(state.navigationState.route) {
-            if self.project?.id != project.id {
-                self.project = project
-            }
+            self.project = project
         }
     }
 }

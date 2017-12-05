@@ -12,7 +12,7 @@
 		C302D8C81F0512E200AF5D96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C302D8C71F0512E200AF5D96 /* Assets.xcassets */; };
 		C302D8CB1F0512E200AF5D96 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C302D8C91F0512E200AF5D96 /* LaunchScreen.storyboard */; };
 		C302D8D61F0512E200AF5D96 /* UDF_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C302D8D51F0512E200AF5D96 /* UDF_SwiftTests.swift */; };
-		C38774D41F14D11600C1E8F4 /* ProjectReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */; };
+		C38774D41F14D11600C1E8F4 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D31F14D11600C1E8F4 /* Reducer.swift */; };
 		C38774D61F14D5E900C1E8F4 /* Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D51F14D5E900C1E8F4 /* Routes.swift */; };
 		C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */; };
 		C39B077C1F0A5F850003838D /* ReSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C39B077B1F0A5F850003838D /* ReSwift.framework */; };
@@ -23,7 +23,7 @@
 		C3E450F41F14BEA10020A603 /* MainState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F31F14BEA10020A603 /* MainState.swift */; };
 		C3E450F71F14BED70020A603 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F61F14BED70020A603 /* Project.swift */; };
 		C3E450F91F14BF910020A603 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450F81F14BF910020A603 /* Item.swift */; };
-		C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450FA1F14C07E0020A603 /* ProjectActions.swift */; };
+		C3E450FB1F14C07E0020A603 /* Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E450FA1F14C07E0020A603 /* Actions.swift */; };
 		C3E450FD1F14C1AC0020A603 /* ReSwiftRouter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */; };
 		C3E450FE1F14C1AC0020A603 /* ReSwiftRouter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3F883821F1513AB006164CC /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F883811F1513AB006164CC /* RealmSwift.framework */; };
@@ -71,7 +71,7 @@
 		C302D8D11F0512E200AF5D96 /* UDF_SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UDF_SwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C302D8D51F0512E200AF5D96 /* UDF_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDF_SwiftTests.swift; sourceTree = "<group>"; };
 		C302D8D71F0512E200AF5D96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectReducer.swift; sourceTree = "<group>"; };
+		C38774D31F14D11600C1E8F4 /* Reducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		C38774D51F14D5E900C1E8F4 /* Routes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Routes.swift; sourceTree = "<group>"; };
 		C38774D71F14EB9100C1E8F4 /* AddProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		C39B077B1F0A5F850003838D /* ReSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwift.framework; path = ../Carthage/Build/iOS/ReSwift.framework; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 		C3E450F31F14BEA10020A603 /* MainState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainState.swift; sourceTree = "<group>"; };
 		C3E450F61F14BED70020A603 /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		C3E450F81F14BF910020A603 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		C3E450FA1F14C07E0020A603 /* ProjectActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectActions.swift; sourceTree = "<group>"; };
+		C3E450FA1F14C07E0020A603 /* Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Actions.swift; sourceTree = "<group>"; };
 		C3E450FC1F14C1AC0020A603 /* ReSwiftRouter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReSwiftRouter.framework; path = ../Carthage/Build/iOS/ReSwiftRouter.framework; sourceTree = "<group>"; };
 		C3F883811F1513AB006164CC /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = ../Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		C3F883841F151849006164CC /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 		C3E450EA1F14BC690020A603 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
-				C3E450FA1F14C07E0020A603 /* ProjectActions.swift */,
+				C3E450FA1F14C07E0020A603 /* Actions.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -175,7 +175,7 @@
 		C3E450EB1F14BC690020A603 /* Reducers */ = {
 			isa = PBXGroup;
 			children = (
-				C38774D31F14D11600C1E8F4 /* ProjectReducer.swift */,
+				C38774D31F14D11600C1E8F4 /* Reducer.swift */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -358,14 +358,14 @@
 				C3E450F91F14BF910020A603 /* Item.swift in Sources */,
 				C38774D61F14D5E900C1E8F4 /* Routes.swift in Sources */,
 				C302D8C11F0512E200AF5D96 /* AppDelegate.swift in Sources */,
-				C38774D41F14D11600C1E8F4 /* ProjectReducer.swift in Sources */,
+				C38774D41F14D11600C1E8F4 /* Reducer.swift in Sources */,
 				C3E450F41F14BEA10020A603 /* MainState.swift in Sources */,
 				C3CA377B1F1F62A9003B1EE8 /* ProjectViewCell.swift in Sources */,
 				C3E450F11F14BC690020A603 /* HomeViewController.swift in Sources */,
 				C38774D81F14EB9100C1E8F4 /* AddProjectViewController.swift in Sources */,
 				C3CA377D1F1F62B6003B1EE8 /* ItemViewCell.swift in Sources */,
 				C3E450F71F14BED70020A603 /* Project.swift in Sources */,
-				C3E450FB1F14C07E0020A603 /* ProjectActions.swift in Sources */,
+				C3E450FB1F14C07E0020A603 /* Actions.swift in Sources */,
 				C3F883951F166658006164CC /* AddItemViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -50,8 +50,6 @@ class HomeViewController: UITableViewController {
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue
         ]
-        let setDataAction = SetRouteSpecificData(route: routes, data: Project())
-        projectsStore.dispatch(setDataAction)
         projectsStore.dispatch(SetRouteAction(routes))
     }
 
@@ -74,7 +72,7 @@ class HomeViewController: UITableViewController {
             projectsStore.dispatch(action)
             tableView.isEditing = false
         }
-        let updateAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
+        let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
             let project = projectsStore.state.projects[indexPath.row]
             let routes: [RouteElementIdentifier] = [
                 RouteIdentifiers.HomeViewController.rawValue,
@@ -86,7 +84,7 @@ class HomeViewController: UITableViewController {
             projectsStore.dispatch(routeAction)
             tableView.isEditing = false
         }
-        return [updateAction, deleteAction]
+        return [editAction, deleteAction]
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

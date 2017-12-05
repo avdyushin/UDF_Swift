@@ -16,6 +16,11 @@ enum RouteIdentifiers: RouteElementIdentifier {
     case AddItemViewController
 }
 
+enum RouteData {
+    case project(Project)
+    case item(Item, parent: Project)
+}
+
 struct AddProjectRoutable: Routable {}
 struct AddItemRoutable: Routable {}
 

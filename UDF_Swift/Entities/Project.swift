@@ -42,14 +42,12 @@ class Project: Object {
         return nf
     }
 
-    private var _frequency = Frequency.daily
     var frequency: Frequency {
         get {
-            return Frequency(rawValue: frequencyRaw) ?? .daily
+            return Frequency(rawValue: frequencyRaw)!
         }
         set {
-            _frequency = newValue
-            frequencyRaw = _frequency.rawValue
+            frequencyRaw = newValue.rawValue
         }
     }
 
@@ -61,5 +59,4 @@ class Project: Object {
     @objc dynamic var createdAt = Date()
     @objc dynamic var updatedAt = Date()
     let items = List<Item>()
-
 }

@@ -18,16 +18,17 @@ class AddItemViewController: UIViewController {
     @IBOutlet var pickerView: UIView!
 
     private var project: Project!
-    private var item: Item! {
+    private var item: Item? {
         didSet {
-            if let amount = item?.amount, amount > 0 {
-                amountTextField.text = amount.description
-                self.title = "EDIT ITEM"
+            if let item = item {
+                title = "EDIT ITEM"
+                amountTextField.text = item.amount.description
+                datePicker.date = item.timestamp
             } else {
+                title = "NEW ITEM"
                 amountTextField.text = nil
-                self.title = "NEW ITEM"
+                datePicker.date = Date()
             }
-            datePicker.date = item?.timestamp ?? Date()
         }
     }
 
@@ -70,13 +71,22 @@ class AddItemViewController: UIViewController {
     }
 
     @IBAction func onSaveTapped(_ sender: Any) {
-        projectsStore.dispatch(ItemActions.update(
-            item,
-            project: project,
-            amount: Double(amountTextField.text ?? "0") ?? 0,
-            timestamp: datePicker.date,
-            notes: ""
-        ))
+        if let item = item {
+            projectsStore.dispatch(ItemActions.update(
+                item,
+                parent: project,
+                newAmount: Double(amountTextField.text ?? "0") ?? 0,
+                newTimestamp: datePicker.date,
+                newNotes: ""
+            ))
+        } else {
+            projectsStore.dispatch(ItemActions.create(
+                parent: project,
+                amount: Double(amountTextField.text ?? "0") ?? 0,
+                timestamp: datePicker.date,
+                notes: ""
+            ))
+        }
         routeBack()
     }
 
@@ -101,13 +111,16 @@ class AddItemViewController: UIViewController {
 
 extension AddItemViewController: StoreSubscriber {
     func newState(state: MainState) {
-        if let projectItem: ProjectItemPair? = state.navigationState.getRouteSpecificState(state.navigationState.route) {
-            if let project = projectItem?.project {
-                self.project = project
-            }
-            if let item = projectItem?.item {
-                self.item = item
-            }
+        guard let data: RouteData = state.navigationState.getRouteSpecificState(state.navigationState.route) else {
+            return
+        }
+        switch data {
+        case .project(let project):
+            self.project = project
+            self.item = nil
+        case .item(let item, let project):
+            self.project = project
+            self.item = item
         }
     }
 }

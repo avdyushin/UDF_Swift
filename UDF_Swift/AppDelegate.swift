@@ -11,7 +11,7 @@ import ReSwift
 import ReSwiftRouter
 import RealmSwift
 
-let projectsStore = Store<MainState>(reducer: ProjectReducer.reduce, state: MainState.default)
+let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,8 +37,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UIViewController()
 
         let mainRoutable = HomeViewRoutable(window: window!)
-        router = Router(store: projectsStore, rootRoutable: mainRoutable) { (state) -> Subscription<NavigationState> in
-            state.select { $0.navigationState }
+        router = Router(store: projectsStore, rootRoutable: mainRoutable) {
+            $0.select { $0.navigationState }
         }
 
         projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
 
         window?.makeKeyAndVisible()
-
         return true
     }
 
@@ -77,7 +76,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
-
