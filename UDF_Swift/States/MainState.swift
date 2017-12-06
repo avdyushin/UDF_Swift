@@ -11,6 +11,7 @@ import ReSwift
 import ReSwiftRouter
 import RealmSwift
 
+/// Main state of application
 class MainState: NSObject, StateType, HasNavigationState {
     var navigationState: NavigationState
     var projects: Results<Project>

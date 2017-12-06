@@ -95,7 +95,6 @@ class AddItemViewController: UIViewController {
     }
 
     func routeBack() {
-        dismiss(animated: true, completion: nil)
         if projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.ProjectViewController.rawValue,

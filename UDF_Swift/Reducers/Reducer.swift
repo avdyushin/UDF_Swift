@@ -12,6 +12,7 @@ import ReSwiftRouter
 import RealmSwift
 
 struct Reducer {
+    // Main reducer
     static func reduce(action: Action, state: MainState?) -> MainState {
         let state = state ?? MainState()
         state.navigationState = NavigationReducer.handleAction(action, state: state.navigationState)
@@ -28,6 +29,7 @@ struct Reducer {
         return state
     }
 
+    // Handle project actions
     static func reduce(_ action: ProjectActions, state: MainState) {
         switch action {
         case .create(let title, let frequency, let units):
@@ -51,6 +53,7 @@ struct Reducer {
         }
     }
 
+    // Handle project's items actions
     static func reduce(_ action: ItemActions, state: MainState) {
         switch action {
         case .create(let project, let amount, let timestamp, let notes):

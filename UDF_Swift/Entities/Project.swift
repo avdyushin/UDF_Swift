@@ -11,6 +11,15 @@ import RealmSwift
 
 class Project: Object {
 
+    @objc private dynamic var frequencyRaw = 0
+    @objc private dynamic var order = 0
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var title = ""
+    @objc dynamic var units = ""
+    @objc dynamic var createdAt = Date()
+    @objc dynamic var updatedAt = Date()
+    let items = List<Item>()
+
     enum Frequency: Int, CustomStringConvertible {
         case daily = 0, monthly, yearly
         static var all = [Frequency.daily, Frequency.monthly, Frequency.yearly]
@@ -50,13 +59,4 @@ class Project: Object {
             frequencyRaw = newValue.rawValue
         }
     }
-
-    @objc private dynamic var frequencyRaw = 0
-    @objc private dynamic var order = 0
-    @objc dynamic var id = UUID().uuidString
-    @objc dynamic var title = ""
-    @objc dynamic var units = ""
-    @objc dynamic var createdAt = Date()
-    @objc dynamic var updatedAt = Date()
-    let items = List<Item>()
 }

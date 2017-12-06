@@ -83,7 +83,6 @@ class AddProjectViewController: UITableViewController {
     }
 
     func routeBack() {
-        dismiss(animated: true, completion: nil)
         if projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue] {

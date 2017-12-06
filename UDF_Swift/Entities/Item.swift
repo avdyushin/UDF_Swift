@@ -11,6 +11,12 @@ import RealmSwift
 
 class Item: Object {
 
+    @objc dynamic var id = UUID().uuidString
+    @objc dynamic var timestamp = Date()
+    @objc dynamic var sectionKey = ""
+    @objc dynamic var amount = -1.0
+    @objc dynamic var comment: String?
+
     static var dateFormatter: DateFormatter = {
         let df = DateFormatter()
         df.dateFormat = "dd.MM.YYYY"
@@ -29,12 +35,6 @@ class Item: Object {
             sectionKey = Item.keyFormatter.string(from: timestamp)
         }
     }
-
-    @objc dynamic var id = UUID().uuidString
-    @objc dynamic var timestamp = Date()
-    @objc dynamic var sectionKey = ""
-    @objc dynamic var amount = -1.0
-    @objc dynamic var comment: String?
 
     override static func ignoredProperties() -> [String] {
         return ["timestampValue"]
