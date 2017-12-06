@@ -1,3 +1,3 @@
 #!/bin/sh
 
-carthage update --platform iOS
+carthage bootstrap --cache-builds --platform iOS
