@@ -137,7 +137,6 @@
 				C3E450EB1F14BC690020A603 /* Reducers */,
 				C3E450EC1F14BC690020A603 /* Routers */,
 				C3E450F51F14BEBF0020A603 /* Entities */,
-				C3E450ED1F14BC690020A603 /* Services */,
 				C3E450F21F14BC770020A603 /* Resources */,
 				C3E450EE1F14BC690020A603 /* States */,
 				C3CA37791F1F628F003B1EE8 /* Views */,
@@ -186,13 +185,6 @@
 				C38774D51F14D5E900C1E8F4 /* Routes.swift */,
 			);
 			path = Routers;
-			sourceTree = "<group>";
-		};
-		C3E450ED1F14BC690020A603 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		C3E450EE1F14BC690020A603 /* States */ = {
