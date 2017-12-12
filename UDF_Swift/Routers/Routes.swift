@@ -56,7 +56,7 @@ struct HomeViewRoutable: Routable {
         default: ()
         }
 
-        assert(false, "Push route `\(routeElementIdentifier)` not found!")
+        fatalError("Push route `\(routeElementIdentifier)` not found!")
     }
 
     func popRouteSegment(_ routeElementIdentifier: RouteElementIdentifier,
@@ -74,7 +74,7 @@ struct HomeViewRoutable: Routable {
         default: ()
         }
 
-        assert(false, "Pop route `\(routeElementIdentifier)` not found!")
+        fatalError("Pop route `\(routeElementIdentifier)` not found!")
     }
 
     func changeRouteSegment(_ from: RouteElementIdentifier,
