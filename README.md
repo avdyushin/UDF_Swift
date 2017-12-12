@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/avdyushin/UDF_Swift.svg?branch=master)](https://travis-ci.org/avdyushin/UDF_Swift)
+
 # State management in iOS
 
 ## About application
