@@ -46,7 +46,7 @@ github "realm/realm-cocoa"
 
 After saving `Cartfile` run this command from Terminal inside root directory of your project.
 ```sh
-carthage update --platform iOS
+carthage bootstrap --cache-builds --platform iOS
 ```
 
 This will fetch all dependencies and build or download pre-compiled framework.
@@ -493,7 +493,9 @@ notificationToken?.invalidate()
 ## Conclusion
 
 Now we have very simple view controllers which update itself depending on state
-and send actions in order to change state. It doesn't do any navigation actions and storage in database.
+and send actions in order to change state.
+
+It doesn't do any navigation actions and storage in database.
 For more code samples it's good to view sources and run sample project.
 
 ## Links
