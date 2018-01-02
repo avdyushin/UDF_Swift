@@ -62,7 +62,7 @@ Next in `Build Phases` tab check `Embedded Framework` section to contain all you
 ### State
 
 As we said we need to create an application state.
-In main state we will keep navigation state, all projects and realm object:
+In main state we will keep navigation state, all projects list as `Results<Project>` and `Realm` itself:
 
 ```swift
 class MainState: NSObject, StateType, HasNavigationState {
@@ -79,7 +79,7 @@ class MainState: NSObject, StateType, HasNavigationState {
 }
 ```
 
-Because it's demo project for simplify let's store this state as global variable inside `AppDelegate.swift`
+Because it's demo project for simplify let's store the state as a global variable inside `AppDelegate.swift`:
 
 ```swift
 let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
@@ -87,7 +87,7 @@ let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.d
 
 ### Actions
 
-To change our state we need actions.
+To make changes on the state we need to create actions.
 There are main actions to manage project and items:
 
 * Create new one
@@ -114,9 +114,13 @@ enum ItemActions: Action {
 }
 ```
 
+They are similar but for `Item` management we need to pass parent `Project` object to link items.
+
 ### Reducers
 
 Reduces — functions to create new state based on given state.
+This functions will accept action and current state and return new state after processing an action.
+First of all we need to handle navigation action and then other actions.
 
 ```swift
 struct Reducer {
@@ -140,6 +144,8 @@ struct Reducer {
 ```
 
 ### Project reducer
+
+As we used `enum` for actions it is easy to switch over types of action to check what to do:
 
 ```swift
 // Handle project actions
@@ -210,13 +216,13 @@ extension ProjectViewController: StoreSubscriber {
 }
 ```
 
-To be begin receive updates we should subscribe:
+To be begin receive updates we should subscribe listener:
 
 ```swift
 projectsStore.subscribe(self)
 ```
 
-And not forget to unsubscribe when we are done:
+And do not forget to unsubscribe listener when we are done:
 
 ```swift
 projectsStore.unsubscribe(self)
@@ -225,7 +231,9 @@ projectsStore.unsubscribe(self)
 ## Navigation State
 
 Navigation over different screens will be done with dispatching routing actions,
-for this one we need to create main `Router` and define how routes should be handled for different paths.
+for this one we need to create main `Router` and define how routes should be handled for different route paths.
+
+Let's show main view controller right after application started:
 
 ```swift
 var router: Router<MainState>!
@@ -272,9 +280,9 @@ struct HomeViewRoutable: Routable {
 }
 ```
 
-Implementing `pushRouteSegment` we will decide how to show given segment.
+Implementing `pushRouteSegment` we will decide how to show given route segment.
 In case of add new project we need to show modal view controller,
-but in case of project details we can push it into current navigation controller stack.
+but in case of project details we need to push it into current navigation stack.
 
 ```swift
 func pushRouteSegment(_ routeElementIdentifier: RouteElementIdentifier,
@@ -326,8 +334,8 @@ func popRouteSegment(_ routeElementIdentifier: RouteElementIdentifier,
 }
 ```
 
-`changeRouteSegment` used for initial state, when home screen is set.
-Just set root view controller for application's window.
+You can see that `changeRouteSegment` used for initial state, when home screen is set.
+It just sets root view controller for application's window.
 
 ```swift
 func changeRouteSegment(_ from: RouteElementIdentifier,
@@ -358,14 +366,14 @@ let routeAction = SetRouteAction(routes)
 ```
 
 To pass some data into route let's create `SetRouteSpecificData` object
-with our `routes` and data we want to pass (for example `Project` instance):
+with our `routes` and the data we want to pass to (for ex. `Project` object instance):
 
 ```swift
 let project = projectsStore.state.projects[indexPath.row]
 let setDataAction = SetRouteSpecificData(route: routes, data: project)
 ```
 
-Now it's time to dispatch route and route data actions:
+Now we can do dispatch of the route and the route data actions:
 
 ```swift
 projectsStore.dispatch(setDataAction)
@@ -436,7 +444,7 @@ class Item: Object {
 
 ### Creating projects
 
-When user adds a new project, he'll has a change to enter name and units and select frequency.
+When user adds a new project, he will has a change to enter name and units and select frequency.
 To create available frequencies list and make it's string representation we can extend `Frequency` `enum`:
 
 ```swift
@@ -497,6 +505,28 @@ and send actions in order to change state.
 
 It doesn't do any navigation actions and storage in database.
 For more code samples it's good to view sources and run sample project.
+
+## Bonus
+
+Travis CI configuration:
+
+```yaml
+language: swift
+osx_image: xcode9.1
+
+cache:
+    directories:
+        - Carthage
+
+before_script:
+    - brew update
+    - brew outdated carthage || brew upgrade carthage
+    - carthage bootstrap --platform iOS --cache-builds --verbose
+
+script:
+    - set -o pipefail
+    - xcodebuild -project UDF_Swift.xcodeproj -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+```
 
 ## Links
 
