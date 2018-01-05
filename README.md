@@ -5,10 +5,10 @@
 ## Introduction
 
 In iOS development it's always good to choose a right architecture.
-As you know in projects used `MVC` pattern it becomes hard
+As you know in projects that are using `MVC` pattern it becomes hard
 to maintain and test massive view controller after some time.
 
-Let's try to make it more clean and reusable using one way data flow architecture.
+Let's try to make it more clean and reusable using unidirectional data flow architecture.
 
 ### Unidirectional Data Flow pattern
 
@@ -21,11 +21,11 @@ Main aspects:
 That's basically it.
 
 In this tutorial you will see how to build sample iOS application
-using exiting unidirectional framework.
+using `ReSwift` framework that provides unidirectional data flow pattern implementation.
 
 ## About application
 
-We are going to build simple application to allow users track they frequently data.
+We are going to build simple application that allows users track their frequently collected data.
 It could be let's say mileage each month or outcome per day.
 
 The main screen (overview) is the place where users can view all created project,
@@ -54,7 +54,7 @@ First of all we need to setup all dependencies for the project.
 One way to install `ReSwift` and `Realm` is using `Carthage` dependency manager for Cocoa applications.
 Carthage can be installed using `brew install carthage` command or downloading `.pkg` from it's home page.
 
-*NOTE* this tutorial was written using latest version of Swift 4.0.2, ReSwift 4.0.0 and Realm 3.0.2.
+*NOTE* this tutorial was written using latest version of `Swift 4.0.2`, `ReSwift 4.0.0` and `Realm 3.0.2`.
 
 Create a file called `Cartfile` in the root directory of you project.
 (Could be done in Terminal using `cat > Cartfile` insert following text then type `^D`).
