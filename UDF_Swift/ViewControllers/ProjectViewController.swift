@@ -36,23 +36,23 @@ class ProjectViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        projectsStore.subscribe(self)
+        AppDelegate.projectsStore.subscribe(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if projectsStore.state.navigationState.route == [
+        if AppDelegate.projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.ProjectViewController.rawValue] {
 
-            projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+            AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
         }
     }
 
     deinit {
         notificationToken?.invalidate()
-        projectsStore.unsubscribe(self)
+        AppDelegate.projectsStore.unsubscribe(self)
     }
 
     @IBAction func onAddTapped(_ sender: Any) {
@@ -65,8 +65,8 @@ class ProjectViewController: UITableViewController {
             RouteIdentifiers.AddItemViewController.rawValue
         ]
         let setDataAction = SetRouteSpecificData(route: routes, data: RouteData.project(project))
-        projectsStore.dispatch(setDataAction)
-        projectsStore.dispatch(SetRouteAction(routes))
+        AppDelegate.projectsStore.dispatch(setDataAction)
+        AppDelegate.projectsStore.dispatch(SetRouteAction(routes))
     }
 
     func editItem(at indexPath: IndexPath) {
@@ -80,8 +80,8 @@ class ProjectViewController: UITableViewController {
             RouteIdentifiers.AddItemViewController.rawValue
         ]
         let setDataAction = SetRouteSpecificData(route: routes, data: RouteData.item(item, parent: project))
-        projectsStore.dispatch(setDataAction)
-        projectsStore.dispatch(SetRouteAction(routes))
+        AppDelegate.projectsStore.dispatch(setDataAction)
+        AppDelegate.projectsStore.dispatch(SetRouteAction(routes))
     }
 
     // MARK: - Table view data source
@@ -110,12 +110,12 @@ class ProjectViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
             let grouped = self.project?.items.filter("sectionKey == %@", self.sectionNames[indexPath.section])
-            guard let item = grouped?[indexPath.row] else {
+            guard let project = self.project, let item = grouped?[indexPath.row] else {
                 return
             }
 
-            let action = ItemActions.delete(item)
-            projectsStore.dispatch(action)
+            let action = ItemActions.delete(item, parent: project)
+            AppDelegate.projectsStore.dispatch(action)
             tableView.isEditing = false
         }
         let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in

@@ -50,7 +50,7 @@ class AddItemViewController: UIViewController {
 
         amountTextField.becomeFirstResponder()
 
-        projectsStore.subscribe(self)
+        AppDelegate.projectsStore.subscribe(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -63,7 +63,7 @@ class AddItemViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        projectsStore.unsubscribe(self)
+        AppDelegate.projectsStore.unsubscribe(self)
     }
 
     @IBAction func onCancelTapped(_ sender: Any) {
@@ -72,7 +72,7 @@ class AddItemViewController: UIViewController {
 
     @IBAction func onSaveTapped(_ sender: Any) {
         if let item = item {
-            projectsStore.dispatch(ItemActions.update(
+            AppDelegate.projectsStore.dispatch(ItemActions.update(
                 item,
                 parent: project,
                 newAmount: Double(amountTextField.text ?? "0") ?? 0,
@@ -80,7 +80,7 @@ class AddItemViewController: UIViewController {
                 newNotes: ""
             ))
         } else {
-            projectsStore.dispatch(ItemActions.create(
+            AppDelegate.projectsStore.dispatch(ItemActions.create(
                 parent: project,
                 amount: Double(amountTextField.text ?? "0") ?? 0,
                 timestamp: datePicker.date,
@@ -95,12 +95,12 @@ class AddItemViewController: UIViewController {
     }
 
     func routeBack() {
-        if projectsStore.state.navigationState.route == [
+        if AppDelegate.projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.ProjectViewController.rawValue,
             RouteIdentifiers.AddItemViewController.rawValue] {
 
-            projectsStore.dispatch(SetRouteAction([
+            AppDelegate.projectsStore.dispatch(SetRouteAction([
                 RouteIdentifiers.HomeViewController.rawValue,
                 RouteIdentifiers.ProjectViewController.rawValue
             ]))

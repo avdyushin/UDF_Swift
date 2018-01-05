@@ -45,12 +45,12 @@ class AddProjectViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        projectsStore.subscribe(self)
+        AppDelegate.projectsStore.subscribe(self)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        projectsStore.unsubscribe(self)
+        AppDelegate.projectsStore.unsubscribe(self)
     }
 
     @IBAction func onCancelTapped(_ sender: Any) {
@@ -66,14 +66,14 @@ class AddProjectViewController: UITableViewController {
         }
 
         if let project = project {
-            projectsStore.dispatch(ProjectActions.update(
+            AppDelegate.projectsStore.dispatch(ProjectActions.update(
                 project,
                 newTitle: title,
                 newFrequency: frequencies[frequencyIndex],
                 newUnits: unitsLabel.text ?? ""
             ))
         } else {
-            projectsStore.dispatch(ProjectActions.create(
+            AppDelegate.projectsStore.dispatch(ProjectActions.create(
                 title: title,
                 frequency: frequencies[frequencyIndex],
                 units: unitsLabel.text ?? ""
@@ -83,11 +83,11 @@ class AddProjectViewController: UITableViewController {
     }
 
     func routeBack() {
-        if projectsStore.state.navigationState.route == [
+        if AppDelegate.projectsStore.state.navigationState.route == [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue] {
 
-            projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+            AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
         }
     }
 

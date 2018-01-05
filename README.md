@@ -135,7 +135,8 @@ enum ItemActions: Action {
 }
 ```
 
-They are similar but for `Item` management we need to pass parent `Project` object to link items.
+They are similar but for create new `Item` we need to pass parent `Project` object to link items.
+For update or delete items parent project is used for update changed date.
 
 ### Reducers
 
@@ -152,9 +153,9 @@ struct Reducer {
 
         switch action {
         case let action as ProjectActions:
-            reduce(action, state: state)
+            ProjectReducer.reduce(action, state: state)
         case let action as ItemActions:
-            reduce(action, state: state)
+            ItemReducer.reduce(action, state: state)
         default:
             ()
         }
@@ -169,26 +170,28 @@ struct Reducer {
 As we used `enum` for actions it is easy to switch over types of action to check what to do:
 
 ```swift
-// Handle project actions
-static func reduce(_ action: ProjectActions, state: MainState) {
-    switch action {
-    case .create(let title, let frequency, let units):
-        try! state.realm.write {
-            let project = Project()
-            state.realm.add(project)
-            project.title = title
-            project.frequency = frequency
-            project.units = units
-        }
-    case .update(let project, let newTitle, let newFrequence, let newUnits):
-        try! state.realm.write {
-            project.title = newTitle
-            project.frequency = newFrequence
-            project.units = newUnits
-        }
-    case .delete(let project):
-        try! state.realm.write {
-            state.realm.delete(project)
+struct ProjectReducer {
+    // Handle project actions
+    static func reduce(_ action: ProjectActions, state: MainState) {
+        switch action {
+        case .create(let title, let frequency, let units):
+            try! state.realm.write {
+                let project = Project()
+                state.realm.add(project)
+                project.title = title
+                project.frequency = frequency
+                project.units = units
+            }
+        case .update(let project, let newTitle, let newFrequence, let newUnits):
+            try! state.realm.write {
+                project.title = newTitle
+                project.frequency = newFrequence
+                project.units = newUnits
+            }
+        case .delete(let project):
+            try! state.realm.write {
+                state.realm.delete(project)
+            }
         }
     }
 }
@@ -197,29 +200,31 @@ static func reduce(_ action: ProjectActions, state: MainState) {
 ### Item reducer
 
 ```swift
-// Handle project's items actions
-static func reduce(_ action: ItemActions, state: MainState) {
-    switch action {
-    case .create(let project, let amount, let timestamp, let notes):
-        try! state.realm.write {
-            let item = Item()
-            state.realm.add(item)
-            item.amount = amount
-            item.timestampValue = timestamp
-            item.comment = notes
-            project.items.append(item)
-            project.updatedAt = Date()
-        }
-    case .update(let item, let project, let newAmount, let newTimestamp, let newNotes):
-        try! state.realm.write {
-            item.amount = newAmount
-            item.timestampValue = newTimestamp
-            item.comment = newNotes
-            project.updatedAt = Date()
-        }
-    case .delete(let item):
-        try! state.realm.write {
-            state.realm.delete(item)
+struct ItemReducer {
+    // Handle project's items actions
+    static func reduce(_ action: ItemActions, state: MainState) {
+        switch action {
+        case .create(let project, let amount, let timestamp, let notes):
+            try! state.realm.write {
+                let item = Item()
+                state.realm.add(item)
+                item.amount = amount
+                item.timestampValue = timestamp
+                item.comment = notes
+                project.items.append(item)
+                project.updatedAt = Date()
+            }
+        case .update(let item, let project, let newAmount, let newTimestamp, let newNotes):
+            try! state.realm.write {
+                item.amount = newAmount
+                item.timestampValue = newTimestamp
+                item.comment = newNotes
+                project.updatedAt = Date()
+            }
+        case .delete(let item):
+            try! state.realm.write {
+                state.realm.delete(item)
+            }
         }
     }
 }

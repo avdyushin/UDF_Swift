@@ -19,16 +19,18 @@ struct Reducer {
 
         switch action {
         case let action as ProjectActions:
-            reduce(action, state: state)
+            ProjectReducer.reduce(action, state: state)
         case let action as ItemActions:
-            reduce(action, state: state)
+            ItemReducer.reduce(action, state: state)
         default:
             ()
         }
 
         return state
     }
+}
 
+struct ProjectReducer {
     // Handle project actions
     static func reduce(_ action: ProjectActions, state: MainState) {
         switch action {
@@ -52,7 +54,9 @@ struct Reducer {
             }
         }
     }
+}
 
+struct ItemReducer {
     // Handle project's items actions
     static func reduce(_ action: ItemActions, state: MainState) {
         switch action {
@@ -73,9 +77,10 @@ struct Reducer {
                 item.comment = newNotes
                 project.updatedAt = Date()
             }
-        case .delete(let item):
+        case .delete(let item, let project):
             try! state.realm.write {
                 state.realm.delete(item)
+                project.updatedAt = Date()
             }
         }
     }
