@@ -100,10 +100,10 @@ class MainState: NSObject, StateType, HasNavigationState {
 }
 ```
 
-Because it's demo project for simplify let's store the state as a global variable inside `AppDelegate.swift`:
+Because it's demo project for simplify let's store the state as a static variable inside `AppDelegate.swift`:
 
 ```swift
-let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
+static let AppDelegate.projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
 ```
 
 ### Actions
@@ -245,13 +245,19 @@ extension ProjectViewController: StoreSubscriber {
 To be begin receive updates we should subscribe listener:
 
 ```swift
-projectsStore.subscribe(self)
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    AppDelegate.projectsStore.subscribe(self)
+}
 ```
 
 And do not forget to unsubscribe listener when we are done:
 
 ```swift
-projectsStore.unsubscribe(self)
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    AppDelegate.projectsStore.unsubscribe(self)
+}
 ```
 
 ## Navigation State
@@ -264,11 +270,11 @@ Let's show main view controller right after application started:
 ```swift
 var router: Router<MainState>!
 let mainRoutable = HomeViewRoutable(window: window!)
-router = Router(store: projectsStore, rootRoutable: mainRoutable) {
+router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRoutable) {
     $0.select { $0.navigationState }
 }
 
-projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
 ```
 
 ### Home screen routes
@@ -395,15 +401,15 @@ To pass some data into route let's create `SetRouteSpecificData` object
 with our `routes` and the data we want to pass to (for ex. `Project` object instance):
 
 ```swift
-let project = projectsStore.state.projects[indexPath.row]
+let project = AppDelegate.projectsStore.state.projects[indexPath.row]
 let setDataAction = SetRouteSpecificData(route: routes, data: project)
 ```
 
 Now we can do dispatch of the route and the route data actions:
 
 ```swift
-projectsStore.dispatch(setDataAction)
-projectsStore.dispatch(routeAction)
+AppDelegate.projectsStore.dispatch(setDataAction)
+AppDelegate.projectsStore.dispatch(routeAction)
 ```
 
 That it to change application state into new route
@@ -502,7 +508,7 @@ For removing use action: `ProjectActions.delete`
 We can subscribe to object changes to update our view to latest state:
 
 ```swift
-notificationToken = projectsStore.state.projects.observe { changes in
+notificationToken = AppDelegate.projectsStore.state.projects.observe { changes in
     switch changes {
     case .initial:
         self.tableView.reloadData()
