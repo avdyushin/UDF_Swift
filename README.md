@@ -269,8 +269,8 @@ Let's show main view controller right after application started:
 
 ```swift
 var router: Router<MainState>!
-let mainRoutable = HomeViewRoutable(window: window!)
-router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRoutable) {
+let mainRouter = HomeViewRouter(window: window!)
+router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRouter) {
     $0.select { $0.navigationState }
 }
 
@@ -281,7 +281,7 @@ AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewCont
 
 ```swift
 /// Home screen
-struct HomeViewRoutable: Routable {
+struct HomeViewRouter: Routable {
     let window: UIWindow
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -335,7 +335,7 @@ func pushRouteSegment(_ routeElementIdentifier: RouteElementIdentifier,
             nav.pushViewController(viewController, animated: animated)
         }
         completionHandler()
-        return ProjectRoutable(viewController: viewController)
+        return ProjectRouter(viewController: viewController)
     default: ()
     }
 
@@ -414,7 +414,7 @@ AppDelegate.projectsStore.dispatch(routeAction)
 
 That it to change application state into new route
 which will be push project details view controller into current navigation stack
-as we set it up in `HomeRoutable` object.
+as we set it up in `HomeRouter` object.
 
 ### Getting data from router
 

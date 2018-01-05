@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIViewController()
 
-        let mainRoutable = HomeViewRouter(window: window!)
-        router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRoutable) {
+        let mainRouter = HomeViewRouter(window: window!)
+        router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRouter) {
             $0.select { $0.navigationState }
         }
 
