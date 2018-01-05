@@ -231,9 +231,10 @@ struct ItemReducer {
                 item.comment = newNotes
                 project.updatedAt = Date()
             }
-        case .delete(let item):
+        case .delete(let item, let project):
             try! state.realm.write {
                 state.realm.delete(item)
+                project.updatedAt = Date()
             }
         }
     }
