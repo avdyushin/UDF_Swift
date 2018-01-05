@@ -2,10 +2,31 @@
 
 # State management in iOS
 
+## Introduction
+
+In iOS development it's always good to choose a right architecture.
+As you know in projects used `MVC` pattern it becomes hard
+to maintain and test massive view controller after some time.
+
+Let's try to make it more clean and reusable using one way data flow architecture.
+
+### Unidirectional Data Flow pattern
+
+Main aspects:
+
+* The whole application `state` is stored in single object (store)
+* The only way to change the `state` is to trigger (dispatch) an `action` (an object describing what to do)
+* `Reducer` specifies how to generate new `state` based on given `action` and current `state`.
+
+That's basically it.
+
+In this tutorial you will see how to build sample iOS application
+using exiting unidirectional framework.
+
 ## About application
 
-We are going to build universal application to allow users track they frequently data.
-It could be let's say mileage each month or outcome each day.
+We are going to build simple application to allow users track they frequently data.
+It could be let's say mileage each month or outcome per day.
 
 The main screen (overview) is the place where users can view all created project,
 sorted by updated date and create new projects.
@@ -17,20 +38,20 @@ Project details screen will display all items related to given project with poss
 
 ## Architecture description
 
-Using ReSwift which is an implementation of the unidirectional data flow in Swift,
+Using `ReSwift` which is an implementation of the unidirectional data flow in Swift,
 we will separate our project into components:
 
 * Application state, explicitly stored in a data structure
 * Views, just a visualization of the current state of the application
 * State changes, using actions to perform it
-* Realm database to persist data
+* Realm database to persist user's data
 
 ![](ReSwiftConcept.png)
 
 ## Getting Started
 
 First of all we need to setup all dependencies for the project.
-One way to install ReSwift and Realm is using Carthage dependency manager for Cocoa applications.
+One way to install `ReSwift` and `Realm` is using `Carthage` dependency manager for Cocoa applications.
 Carthage can be installed using `brew install carthage` command or downloading `.pkg` from it's home page.
 
 *NOTE* this tutorial was written using latest version of Swift 4.0.2, ReSwift 4.0.0 and Realm 3.0.2.
