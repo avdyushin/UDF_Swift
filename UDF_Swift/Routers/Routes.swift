@@ -24,7 +24,7 @@ enum RouteData {
 }
 
 /// Home screen
-struct HomeViewRoutable: Routable {
+struct HomeViewRouter: Routable {
     let window: UIWindow
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -52,7 +52,7 @@ struct HomeViewRoutable: Routable {
                 nav.pushViewController(viewController, animated: animated)
             }
             completionHandler()
-            return ProjectRoutable(viewController: viewController)
+            return ProjectRouter(viewController: viewController)
         default: ()
         }
 
@@ -88,7 +88,7 @@ struct HomeViewRoutable: Routable {
 }
 
 /// Project details screen
-struct ProjectRoutable: Routable {
+struct ProjectRouter: Routable {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let viewController: UIViewController
 

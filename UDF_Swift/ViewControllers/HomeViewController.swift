@@ -21,7 +21,7 @@ class HomeViewController: UITableViewController {
         tableView.estimatedRowHeight = 72
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        notificationToken = projectsStore.state.projects.observe { changes in
+        notificationToken = AppDelegate.projectsStore.state.projects.observe { changes in
             switch changes {
             case .initial:
                 self.tableView.reloadData()
@@ -50,38 +50,38 @@ class HomeViewController: UITableViewController {
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.AddProjectViewController.rawValue
         ]
-        projectsStore.dispatch(SetRouteAction(routes))
+        AppDelegate.projectsStore.dispatch(SetRouteAction(routes))
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return projectsStore.state.projects.count
+        return AppDelegate.projectsStore.state.projects.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectCell", for: indexPath) as! ProjectViewCell
-        cell.project = projectsStore.state.projects[indexPath.row]
+        cell.project = AppDelegate.projectsStore.state.projects[indexPath.row]
         return cell
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { (action, indexPath) in
-            let project = projectsStore.state.projects[indexPath.row]
+            let project = AppDelegate.projectsStore.state.projects[indexPath.row]
             let action = ProjectActions.delete(project)
-            projectsStore.dispatch(action)
+            AppDelegate.projectsStore.dispatch(action)
             tableView.isEditing = false
         }
         let editAction = UITableViewRowAction(style: .normal, title: "Edit") { (action, indexPath) in
-            let project = projectsStore.state.projects[indexPath.row]
+            let project = AppDelegate.projectsStore.state.projects[indexPath.row]
             let routes: [RouteElementIdentifier] = [
                 RouteIdentifiers.HomeViewController.rawValue,
                 RouteIdentifiers.AddProjectViewController.rawValue
             ]
             let routeAction = SetRouteAction(routes)
             let setDataAction = SetRouteSpecificData(route: routes, data: project)
-            projectsStore.dispatch(setDataAction)
-            projectsStore.dispatch(routeAction)
+            AppDelegate.projectsStore.dispatch(setDataAction)
+            AppDelegate.projectsStore.dispatch(routeAction)
             tableView.isEditing = false
         }
         return [editAction, deleteAction]
@@ -90,7 +90,7 @@ class HomeViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let project = projectsStore.state.projects[indexPath.row]
+        let project = AppDelegate.projectsStore.state.projects[indexPath.row]
         let routes: [RouteElementIdentifier] = [
             RouteIdentifiers.HomeViewController.rawValue,
             RouteIdentifiers.ProjectViewController.rawValue
@@ -98,7 +98,7 @@ class HomeViewController: UITableViewController {
 
         let routeAction = SetRouteAction(routes)
         let setDataAction = SetRouteSpecificData(route: routes, data: project)
-        projectsStore.dispatch(setDataAction)
-        projectsStore.dispatch(routeAction)
+        AppDelegate.projectsStore.dispatch(setDataAction)
+        AppDelegate.projectsStore.dispatch(routeAction)
     }
 }

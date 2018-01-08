@@ -5,10 +5,10 @@
 ## Introduction
 
 In iOS development it's always good to choose a right architecture.
-As you know in projects used `MVC` pattern it becomes hard
+As you know in projects that are using `MVC` pattern it becomes hard
 to maintain and test massive view controller after some time.
 
-Let's try to make it more clean and reusable using one way data flow architecture.
+Let's try to make it more clean and reusable using unidirectional data flow architecture.
 
 ### Unidirectional Data Flow pattern
 
@@ -21,11 +21,11 @@ Main aspects:
 That's basically it.
 
 In this tutorial you will see how to build sample iOS application
-using exiting unidirectional framework.
+using `ReSwift` framework that provides unidirectional data flow pattern implementation.
 
 ## About application
 
-We are going to build simple application to allow users track they frequently data.
+We are going to build simple application that allows users track their frequently collected data.
 It could be let's say mileage each month or outcome per day.
 
 The main screen (overview) is the place where users can view all created project,
@@ -54,7 +54,7 @@ First of all we need to setup all dependencies for the project.
 One way to install `ReSwift` and `Realm` is using `Carthage` dependency manager for Cocoa applications.
 Carthage can be installed using `brew install carthage` command or downloading `.pkg` from it's home page.
 
-*NOTE* this tutorial was written using latest version of Swift 4.0.2, ReSwift 4.0.0 and Realm 3.0.2.
+*NOTE* this tutorial was written using latest version of `Swift 4.0.2`, `ReSwift 4.0.0` and `Realm 3.0.2`.
 
 Create a file called `Cartfile` in the root directory of you project.
 (Could be done in Terminal using `cat > Cartfile` insert following text then type `^D`).
@@ -100,10 +100,10 @@ class MainState: NSObject, StateType, HasNavigationState {
 }
 ```
 
-Because it's demo project for simplify let's store the state as a global variable inside `AppDelegate.swift`:
+Because it's demo project for simplify let's store the state as a static variable inside `AppDelegate.swift`:
 
 ```swift
-let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
+static let AppDelegate.projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
 ```
 
 ### Actions
@@ -118,9 +118,13 @@ There are main actions to manage project and items:
 ### Projects actions:
 
 ```swift
+/// Project actions
 enum ProjectActions: Action {
+    /// Creates new `Project` with given title, frequency and units
     case create(title: String, frequency: Project.Frequency, units: String)
+    /// Updates given `Project` with new title, frequency and units
     case update(Project, newTitle: String, newFrequency: Project.Frequency, newUnits: String)
+    /// Deletes given `Project`
     case delete(Project)
 }
 ```
@@ -128,14 +132,21 @@ enum ProjectActions: Action {
 ### Items actions:
 
 ```swift
+/// Item actions
 enum ItemActions: Action {
+    /// Creates new `Item` in parent `Project` with given amount, timestamp and notes
     case create(parent: Project, amount: Double, timestamp: Date, notes: String?)
+    /// Updates given `Item` with new amount, timestamp and notes
+    /// Parent `Project` is needed to change `updatedAt` date
     case update(Item, parent: Project, newAmount: Double, newTimestamp: Date, newNotes: String?)
-    case delete(Item)
+    /// Deletes given `Item`
+    /// Parent `Project` is needed to change `updatedAt` date
+    case delete(Item, parent: Project)
 }
 ```
 
-They are similar but for `Item` management we need to pass parent `Project` object to link items.
+They are similar but for create new `Item` we need to pass parent `Project` object to link items.
+For update or delete items parent project is used for update changed date.
 
 ### Reducers
 
@@ -152,9 +163,9 @@ struct Reducer {
 
         switch action {
         case let action as ProjectActions:
-            reduce(action, state: state)
+            ProjectReducer.reduce(action, state: state)
         case let action as ItemActions:
-            reduce(action, state: state)
+            ItemReducer.reduce(action, state: state)
         default:
             ()
         }
@@ -169,26 +180,28 @@ struct Reducer {
 As we used `enum` for actions it is easy to switch over types of action to check what to do:
 
 ```swift
-// Handle project actions
-static func reduce(_ action: ProjectActions, state: MainState) {
-    switch action {
-    case .create(let title, let frequency, let units):
-        try! state.realm.write {
-            let project = Project()
-            state.realm.add(project)
-            project.title = title
-            project.frequency = frequency
-            project.units = units
-        }
-    case .update(let project, let newTitle, let newFrequence, let newUnits):
-        try! state.realm.write {
-            project.title = newTitle
-            project.frequency = newFrequence
-            project.units = newUnits
-        }
-    case .delete(let project):
-        try! state.realm.write {
-            state.realm.delete(project)
+struct ProjectReducer {
+    // Handle project actions
+    static func reduce(_ action: ProjectActions, state: MainState) {
+        switch action {
+        case .create(let title, let frequency, let units):
+            try! state.realm.write {
+                let project = Project()
+                state.realm.add(project)
+                project.title = title
+                project.frequency = frequency
+                project.units = units
+            }
+        case .update(let project, let newTitle, let newFrequence, let newUnits):
+            try! state.realm.write {
+                project.title = newTitle
+                project.frequency = newFrequence
+                project.units = newUnits
+            }
+        case .delete(let project):
+            try! state.realm.write {
+                state.realm.delete(project)
+            }
         }
     }
 }
@@ -197,29 +210,32 @@ static func reduce(_ action: ProjectActions, state: MainState) {
 ### Item reducer
 
 ```swift
-// Handle project's items actions
-static func reduce(_ action: ItemActions, state: MainState) {
-    switch action {
-    case .create(let project, let amount, let timestamp, let notes):
-        try! state.realm.write {
-            let item = Item()
-            state.realm.add(item)
-            item.amount = amount
-            item.timestampValue = timestamp
-            item.comment = notes
-            project.items.append(item)
-            project.updatedAt = Date()
-        }
-    case .update(let item, let project, let newAmount, let newTimestamp, let newNotes):
-        try! state.realm.write {
-            item.amount = newAmount
-            item.timestampValue = newTimestamp
-            item.comment = newNotes
-            project.updatedAt = Date()
-        }
-    case .delete(let item):
-        try! state.realm.write {
-            state.realm.delete(item)
+struct ItemReducer {
+    // Handle project's items actions
+    static func reduce(_ action: ItemActions, state: MainState) {
+        switch action {
+        case .create(let project, let amount, let timestamp, let notes):
+            try! state.realm.write {
+                let item = Item()
+                state.realm.add(item)
+                item.amount = amount
+                item.timestampValue = timestamp
+                item.comment = notes
+                project.items.append(item)
+                project.updatedAt = Date()
+            }
+        case .update(let item, let project, let newAmount, let newTimestamp, let newNotes):
+            try! state.realm.write {
+                item.amount = newAmount
+                item.timestampValue = newTimestamp
+                item.comment = newNotes
+                project.updatedAt = Date()
+            }
+        case .delete(let item, let project):
+            try! state.realm.write {
+                state.realm.delete(item)
+                project.updatedAt = Date()
+            }
         }
     }
 }
@@ -240,13 +256,19 @@ extension ProjectViewController: StoreSubscriber {
 To be begin receive updates we should subscribe listener:
 
 ```swift
-projectsStore.subscribe(self)
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    AppDelegate.projectsStore.subscribe(self)
+}
 ```
 
 And do not forget to unsubscribe listener when we are done:
 
 ```swift
-projectsStore.unsubscribe(self)
+override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    AppDelegate.projectsStore.unsubscribe(self)
+}
 ```
 
 ## Navigation State
@@ -258,19 +280,19 @@ Let's show main view controller right after application started:
 
 ```swift
 var router: Router<MainState>!
-let mainRoutable = HomeViewRoutable(window: window!)
-router = Router(store: projectsStore, rootRoutable: mainRoutable) {
+let mainRouter = HomeViewRouter(window: window!)
+router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRouter) {
     $0.select { $0.navigationState }
 }
 
-projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
 ```
 
 ### Home screen routes
 
 ```swift
 /// Home screen
-struct HomeViewRoutable: Routable {
+struct HomeViewRouter: Routable {
     let window: UIWindow
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
@@ -324,7 +346,7 @@ func pushRouteSegment(_ routeElementIdentifier: RouteElementIdentifier,
             nav.pushViewController(viewController, animated: animated)
         }
         completionHandler()
-        return ProjectRoutable(viewController: viewController)
+        return ProjectRouter(viewController: viewController)
     default: ()
     }
 
@@ -390,20 +412,20 @@ To pass some data into route let's create `SetRouteSpecificData` object
 with our `routes` and the data we want to pass to (for ex. `Project` object instance):
 
 ```swift
-let project = projectsStore.state.projects[indexPath.row]
+let project = AppDelegate.projectsStore.state.projects[indexPath.row]
 let setDataAction = SetRouteSpecificData(route: routes, data: project)
 ```
 
 Now we can do dispatch of the route and the route data actions:
 
 ```swift
-projectsStore.dispatch(setDataAction)
-projectsStore.dispatch(routeAction)
+AppDelegate.projectsStore.dispatch(setDataAction)
+AppDelegate.projectsStore.dispatch(routeAction)
 ```
 
 That it to change application state into new route
 which will be push project details view controller into current navigation stack
-as we set it up in `HomeRoutable` object.
+as we set it up in `HomeRouter` object.
 
 ### Getting data from router
 
@@ -497,7 +519,7 @@ For removing use action: `ProjectActions.delete`
 We can subscribe to object changes to update our view to latest state:
 
 ```swift
-notificationToken = projectsStore.state.projects.observe { changes in
+notificationToken = AppDelegate.projectsStore.state.projects.observe { changes in
     switch changes {
     case .initial:
         self.tableView.reloadData()

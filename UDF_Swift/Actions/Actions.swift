@@ -27,5 +27,6 @@ enum ItemActions: Action {
     /// Parent `Project` is needed to change `updatedAt` date
     case update(Item, parent: Project, newAmount: Double, newTimestamp: Date, newNotes: String?)
     /// Deletes given `Item`
-    case delete(Item)
+    /// Parent `Project` is needed to change `updatedAt` date
+    case delete(Item, parent: Project)
 }

@@ -11,10 +11,10 @@ import ReSwift
 import ReSwiftRouter
 import RealmSwift
 
-let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    static let projectsStore = Store<MainState>(reducer: Reducer.reduce, state: MainState.default)
 
     var window: UIWindow?
     var router: Router<MainState>!
@@ -36,12 +36,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UIViewController()
 
-        let mainRoutable = HomeViewRoutable(window: window!)
-        router = Router(store: projectsStore, rootRoutable: mainRoutable) {
+        let mainRouter = HomeViewRouter(window: window!)
+        router = Router(store: AppDelegate.projectsStore, rootRoutable: mainRouter) {
             $0.select { $0.navigationState }
         }
 
-        projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
+        AppDelegate.projectsStore.dispatch(SetRouteAction([RouteIdentifiers.HomeViewController.rawValue]))
 
         UINavigationBar.appearance().barStyle = .black
         UINavigationBar.appearance().tintColor = .white
