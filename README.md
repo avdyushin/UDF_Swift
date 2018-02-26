@@ -9,10 +9,12 @@ As you know in projects that are using `MVC` pattern it becomes hard
 to maintain and test massive view controller after some time.
 
 Let's try to make it more clean and reusable using unidirectional data flow architecture.
+There are well-known [Redux](https://github.com/reactjs/redux) implementation and [Flux](http://facebook.github.io/flux/).
+But both of them are for the Web applications.
 
 ### Unidirectional Data Flow pattern
 
-Main aspects:
+Main aspects we got from Flux documentation ([Flux overview](https://facebook.github.io/flux/docs/in-depth-overview.html#content))
 
 * The whole application `state` is stored in single object (store)
 * The only way to change the `state` is to trigger (dispatch) an `action` (an object describing what to do)
@@ -48,10 +50,12 @@ we will separate our project into components:
 
 ![](ReSwiftConcept.png)
 
+All above is according [ReSwift's homepage](https://github.com/ReSwift/ReSwift#about-reswift).
+
 ## Getting Started
 
 First of all we need to setup all dependencies for the project.
-One way to install `ReSwift` and `Realm` is using `Carthage` dependency manager for Cocoa applications.
+One way to install `ReSwift` and `Realm` is using [Carthage](https://github.com/Carthage/Carthage) dependency manager for Cocoa applications.
 Carthage can be installed using `brew install carthage` command or downloading `.pkg` from it's home page.
 
 *NOTE* this tutorial was written using latest version of `Swift 4.0.2`, `ReSwift 4.0.0` and `Realm 3.0.2`.
@@ -574,6 +578,8 @@ script:
 ## Links
 
 - [Carthage](https://github.com/Carthage/Carthage)
+- [Redux](https://github.com/reactjs/redux)
+- [Flux](http://facebook.github.io/flux/)
 - [ReSwift](https://github.com/ReSwift/ReSwift)
 - [ReSwift Router](https://github.com/ReSwift/ReSwift-Router)
 - [Realm](https://realm.io)
